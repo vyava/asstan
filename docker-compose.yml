@@ -4,7 +4,7 @@ services:
   server:
     build:
       context : ./api
-      dockerfile: dev.Dockerfile
+      dockerfile: Dockerfile
     image: asstan-server
     container_name: asstan-server
     ports:
@@ -49,4 +49,3 @@ services:
 volumes:
   mongodb_data:
     driver: local
-    
