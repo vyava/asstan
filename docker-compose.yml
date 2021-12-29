@@ -1,0 +1,51 @@
+version: "3.7"
+
+services:
+  server:
+    build:
+      context : ./api
+      dockerfile: dev.Dockerfile
+    image: asstan-server
+    container_name: asstan-server
+    ports:
+      - "7000:7000"
+    command: npm run dev
+    env_file:
+      - ./api/.env
+    volumes:
+      - ./api:/usr/src/api
+  
+  client:
+    build:
+      context : ./app
+      dockerfile: Dockerfile
+      target : development
+    image: asstan-client
+    container_name: asstan-client
+    ports:
+      - 3000:3000
+    command: npm run dev
+    env_file:
+      - ./app/.env.local
+    volumes:
+      - ./app:/app
+      # - ./app/node_modules:/app/node_modules
+  
+  nginx:
+    build:
+      context : ./nginx
+      dockerfile: Dockerfile
+    image: asstan-nginx
+    container_name: asstan-nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - '8080:80'
+    restart : on-failure
+    command: [nginx-debug, '-g', 'daemon off;']
+    links:
+      - server:server
+      - client:client
+volumes:
+  mongodb_data:
+    driver: local

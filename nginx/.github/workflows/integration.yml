@@ -1,0 +1,26 @@
+name: Deploy to Production
+on:
+  push:
+    branches:
+      - master
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Git Checkout
+      uses: actions/checkout@v1
+
+    - name: Login to Digital Ocean Registry
+      uses: docker/login-action@v1
+      with:
+        registry: registry.digitalocean.com
+        username: ${{ secrets.NGINX_SECRET }}
+        password: ${{ secrets.NGINX_SECRET }}
+
+    - name: Build latest
+      run: docker build -t registry.digitalocean.com/asstan-app/asstan-nginx:latest .
+
+    - name: Push to Digital Ocean Registry
+      run: docker push registry.digitalocean.com/asstan-app/asstan-nginx:latest

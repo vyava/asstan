@@ -1,0 +1,211 @@
+.root {
+    @apply
+    relative
+    pb-6
+    w-full
+}
+
+.container {
+
+    @apply
+    min-h-screen
+    overflow-x-auto
+}
+
+.list {
+    overflow-x: auto;
+    @apply
+    w-full
+    text-xs
+}
+
+.head_container {
+    @apply
+    flex
+    flex-col
+}
+
+.head {
+    @apply
+    hidden
+    md:flex
+    flex-row
+    justify-between
+    mb-2
+    border-b-2;
+
+    & > div {
+        @apply
+        py-3 px-1
+        text-gray-200 font-normal text-left text-base
+        bg-white
+        flex-grow
+    }
+}
+
+.file_buttons {
+    @apply
+    ml-auto
+    mr-3
+    cursor-default;
+    & svg {
+        width: 0.9rem;
+        @apply
+        text-primary-100
+        border-l
+        pl-1
+        border-white
+        font-bold
+    }
+}
+
+.buttons_container {
+    @apply
+    flex
+    relative
+    z-10
+    items-stretch
+    gap-2
+    bg-primary-400
+    p-2
+    rounded-sm
+    text-white;
+
+    &:hover {
+        .dropdown_buttons {
+            visibility: visible;
+            opacity: 1;
+            display: block;
+        }
+    }
+}
+
+.dropdown_buttons {
+    min-width: 100px;
+
+    @apply
+    flex
+    bg-primary-400
+    hidden
+    invisible
+    py-1
+    px-1
+    opacity-0
+    rounded-sm
+    mt-5
+    absolute
+    right-0;
+
+    & > button {
+        @apply
+        flex
+        my-2
+        p-2
+        bg-white
+        text-black;
+    };
+
+    
+};
+
+.save_file{
+    @apply
+    flex
+    text-primary-100
+    text-left;
+    
+    > svg {
+        @apply
+        flex-grow
+        mr-2
+        w-4
+    }
+};
+
+.dropdown {
+    li>ul                 { transform: translatex(100%) scale(0) }
+    li:hover>ul           { transform: translatex(101%) scale(1) }
+    li > button svg       { transform: rotate(-90deg) }
+    li:hover > button svg { transform: rotate(-270deg) }
+    .scale-0 { transform: scale(0) }
+    .min-w-32 { min-width: 8rem }
+}
+
+
+  /* Below styles fake what can be achieved with the tailwind config
+     you need to add the group-hover variant to scale and define your custom
+     min width style.
+  	 See https://codesandbox.io/s/tailwindcss-multilevel-dropdown-y91j7?file=/index.html
+  	 for implementation with config file
+  */
+.group {
+    @apply
+    inline-block;
+
+    &:hover .group-hover-scale-100 { transform: scale(1);display:block }
+    &:hover .group-hover-rotate-180 { transform: rotate(180deg) }
+
+}
+
+.group_hover_scale_100 {
+    @apply
+    bg-white
+    border
+    rounded-sm
+    transform
+    scale-0
+    group-hover-scale-100
+    absolute 
+    transition
+    duration-150
+    ease-in-out
+    origin-top
+    min-w-32
+}
+
+.body {
+    @apply
+    flex
+    flex-col
+    gap-2;
+}
+
+.body_row {
+    // box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    // box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    // box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+    box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+    @apply
+    hover:bg-primary-800
+    flex
+    flex-col
+    md:flex-row
+    lg:flex-nowrap
+    lg:flex-row
+    p-2
+    border border-gray-500
+    rounded
+    flex-wrap;
+
+    & > div {
+        @apply
+        py-1 px-2
+        relative
+        lg:static
+        flex-1
+    }
+    
+    &:last-child {
+        margin-bottom: 40px
+    }
+};
+
+.body_row_item_adres {
+    @apply
+    flex
+    flex-col;
+
+    & > b {
+        font-size: 0.6rem;
+    }
+}

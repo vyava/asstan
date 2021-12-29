@@ -1,0 +1,87 @@
+.root {
+    @apply
+    relative
+};
+
+.user_pic {
+    @apply
+    cursor-pointer
+    inline-block
+    text-gray-100
+    flex
+    gap-2;
+
+    & > svg {
+        width : 0.7rem
+    };
+
+    & img {
+        @apply
+        text-white
+    }
+}
+
+.profile_button {
+    @apply
+    relative
+    z-40
+    block
+    h-8 w-8
+    rounded-full
+    overflow-hidden
+    border-2 border-gray-600
+    focus:outline-none focus:border-white;
+};
+
+.profile_image {
+    @apply
+    h-full
+    w-full
+    object-cover;
+};
+
+.overlay {
+    @apply
+    fixed
+    inset-0
+    h-full
+    w-full
+    bg-black
+    opacity-50
+    z-30
+    cursor-default;
+}
+
+.menu {
+    @apply
+    absolute
+    right-0
+    mt-2
+    py-2
+    w-48
+    bg-white
+    rounded-lg
+    z-40
+    shadow-xl;
+}
+
+.menu_item {
+    @apply
+    block
+    px-4
+    py-2
+    text-gray-800
+
+    hover:bg-indigo-500
+    hover:text-white;
+};
+
+.user_name {
+    @apply
+    block
+    px-4
+    py-2
+    text-xs
+    border-b-2
+    border-gray-100
+}

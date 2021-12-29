@@ -1,0 +1,27 @@
+.button_group {
+  @apply
+  flex
+  text-sm
+  text-primary-600
+  rounded-md
+  border
+  border-primary-600;
+}
+
+.button {
+  @apply
+  px-4 py-1
+  border-l border-primary-600
+  hover:bg-primary-700 hover:text-primary-500;
+
+  &.active {
+    color : red;
+    @apply
+    hover:bg-primary-700
+    hover:text-primary-500;
+  }
+}
+
+.button_group button:first-child {
+  border: none;
+}

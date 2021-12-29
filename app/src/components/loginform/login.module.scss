@@ -1,0 +1,113 @@
+.root {
+    @apply
+    bg-white
+    w-full
+    flex
+}
+
+.left {
+    @apply
+    hidden
+    md:block
+    md:w-2/5
+    bg-gradient-to-r
+    from-primary-100 to-primary-600;
+}
+
+.right {
+    @apply
+    p-10
+    w-full
+    md:w-3/5
+    lg:w-3/5;
+}
+
+.box {
+    @apply
+    mt-5 lg:mt-16
+    px-2 md:px-0 lg:px-12
+    w-full;
+
+    & > div {
+        @apply
+        mt-12
+    }
+}
+
+.email_container {
+    & > div {
+        @apply
+
+        text-xs font-bold text-gray-700
+        tracking-wide;
+    }
+};
+
+.input {
+    @apply
+    w-full
+    text-lg
+    py-2
+    border-b border-gray-300
+    focus:outline-none focus:border-primary-500;
+}
+.input::placeholder {
+    @apply
+    text-gray-200;
+}
+
+.password_container {
+    @apply
+    mt-8;
+
+    & > div {
+        @apply
+        flex
+        justify-between
+        items-center
+    }
+}
+
+.password_input {
+    @apply
+    w-full
+    text-lg
+    py-2
+    border-b border-gray-300
+    focus:outline-none focus:border-indigo-500;
+}
+
+.label {
+    @apply
+    font-bold
+    text-gray-700
+    tracking-wide
+}
+
+.submit_container {
+    @apply
+    mt-10;
+}
+
+.login_button {
+    @apply
+    block
+    text-center
+    bg-primary-400
+    text-gray-400
+    p-3
+    w-full
+    rounded-full
+    tracking-wide
+    hover:bg-secondary-100
+    shadow-lg;
+}
+
+.small_link {
+    @apply
+    text-base
+    font-semibold
+    text-secondary-100
+    hover:text-primary-200
+    cursor-pointer
+}

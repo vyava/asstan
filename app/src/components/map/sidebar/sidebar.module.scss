@@ -1,0 +1,25 @@
+.root {
+    @apply
+    absolute
+    w-2/3
+    box-border
+    right-0
+    p-2
+    rounded-md;
+};
+
+.heading {
+    @apply
+    flex
+    gap-2;
+
+    & > h2, & > b {
+        @apply
+        text-base;
+    };
+
+    & > b {
+        @apply
+        font-bold;
+    }
+}

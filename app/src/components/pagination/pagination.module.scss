@@ -1,0 +1,44 @@
+.pagination {
+    @apply
+    flex
+    fixed
+    bottom-0
+    py-2 px-1
+    min-w-full
+    bg-white
+    border-t
+    justify-center
+    gap-x-2
+    text-sm
+    content-center;
+    
+    
+    a {
+        @apply
+        py-0.5 px-3
+            text-xs
+            rounded
+            bg-primary-700
+            text-center
+            text-primary-500
+            hidden
+            sm:block
+            hover:text-white
+            hover:bg-primary-500
+            leading-6;
+            
+    };
+    
+}
+
+a.pagination_arrow {
+    @apply
+    text-sm
+    block
+}
+
+a.active_page {
+    @apply
+    text-white
+    bg-primary-500;
+}

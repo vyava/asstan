@@ -1,0 +1,28 @@
+.root {
+  @apply flex
+        flex-col
+        h-full
+        gap-4
+}
+
+.link {
+  @apply inline-block
+    p-1
+    text-center
+    rounded
+    hover:bg-secondary-100
+    text-white;
+
+    > span {
+      @apply
+      text-sm
+      block
+    };
+    > svg {
+      height: 25px;
+    }
+}
+
+.link_home {
+  @apply mb-5 mt-3;
+}

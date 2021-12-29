@@ -1,0 +1,24 @@
+mjml
+  mj-head
+    include /styles/global.pug
+  mj-body(mj-class="griBackground")
+    include /partials/header.pug
+
+    mj-section(mj-class="padding5px10px acikyesilBackground" )
+      mj-column(width='100%' mj-class="koyuyesilBackground")
+        mj-text(font-size='18px' color='#BEBEBE')
+          | TAPDK Ruhsatlı Bayiler #{tarih}
+    mj-section(mj-class="acikyesilBackground padding10px10px")
+      mj-column(mj-class="koyuyesilBackground")
+        mj-table(color='#fff' line-height='25px' font-size='13px')
+          tr(style={'border-bottom': '2px solid #105D2A', 'text-align': 'left'})
+            each head in header
+              th(style={'padding': '0 0 5px 0'})
+                b(style={'color': '#fff','font-size': '15px'})=head
+          each d in fileData
+            tr
+              //- td(style={'padding':0})= d.bolge
+              td(style={'padding':0})= d.distributor
+              td(style={'padding':0})= d["FAAL"]
+              td(style={'padding':0})= d["ONAY BEKLİYOR"]
+              td(style={'padding':0})= d["TERK"]

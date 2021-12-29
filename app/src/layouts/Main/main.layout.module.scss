@@ -1,0 +1,43 @@
+$left-space : 5rem;
+
+.root {
+  padding-left: $left-space;
+
+  @apply
+  w-full
+}
+
+.left {
+  width: $left-space;
+  
+  @apply
+  p-1.5
+  bg-primary-100
+  rounded-tl-lg
+  text-primary-900
+  fixed
+  h-full
+  left-0 top-0
+  z-20;
+}
+
+.right {
+  @apply
+  grid
+  grid-rows-header
+  relative
+  z-30
+  h-full;
+}
+
+
+.content {
+    @apply
+    bg-white
+    p-2
+    m-3
+    rounded-md
+    border-primary-600
+    border-opacity-25
+    shadow
+}
