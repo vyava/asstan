@@ -7,8 +7,11 @@ module.exports = {
     //   }
     // }
 
-     return config
-   },
+    return config
+  },
+
+  dir: './src',
+
   webpackDevMiddleware: config => {
     config.watchOptions = {
       poll: 800,
