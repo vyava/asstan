@@ -28,6 +28,9 @@ FROM base AS production
 # Install PM2 globally
 RUN npm install --global pm2
 
+# install next globally
+RUN npm i -g next
+
 # Build app
 RUN npm run build
 
