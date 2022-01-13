@@ -51,7 +51,7 @@ next-route-announcer {
   display: none;
 }
 
-input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+input::placeholder, input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
   @apply
   text-black;
 }

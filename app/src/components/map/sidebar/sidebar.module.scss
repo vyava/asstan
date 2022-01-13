@@ -1,11 +1,11 @@
 .root {
     @apply
-    absolute
-    w-2/3
     box-border
     right-0
-    p-2
+    ml-auto
     rounded-md;
+
+    width: 66.66666%;
 };
 
 .heading {

@@ -20,7 +20,11 @@
   border rounded-lg
   border-primary-600
   items-center
-  justify-start
+  justify-start;
+
+  &::placeholger {
+    color: black;
+  }
 }
 
 .search input {
