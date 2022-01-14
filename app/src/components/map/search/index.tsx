@@ -9,8 +9,9 @@ const MapSearch = () => {
     const mapRef = useRef<L.Map>(null) as MutableRefObject<L.Map>;
 
     useEffect(() => {
-        mapRef.current = L.map('map', { zoomControl: true, center: [51.505, -0.09], zoom: 13 });
-        
+        if(!mapRef.current) {
+            mapRef.current = L.map('map', { zoomControl: true, center: [51.505, -0.09], zoom: 13 });
+        }
 
         var littleton = L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.'),
         denver    = L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.'),
