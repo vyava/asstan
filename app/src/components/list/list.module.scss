@@ -167,22 +167,20 @@
     @apply
     flex
     flex-col
-    gap-2;
+    gap-2
+    p-1;
 }
 
 .body_row {
-    // box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-    // box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
-    // box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
-    box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
     @apply
+    shadow
     hover:bg-primary-800
     flex
     flex-col
     md:flex-row
     lg:flex-nowrap
     lg:flex-row
-    p-2
+    py-2
     border border-gray-500
     rounded
     flex-wrap;
