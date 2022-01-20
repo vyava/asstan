@@ -8,4 +8,8 @@ export interface IBayi {
     adres: string;
     vergiNo: string;
     email? : string | Object;
+    coords? : {
+        lat : string;
+        lng : string;
+    }
 }
