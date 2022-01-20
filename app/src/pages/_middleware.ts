@@ -13,13 +13,13 @@ export async function setUserCookie(
   const token = request.cookies["token"];
 
   console.log("TOKEN FOUND : "+token)
-  console.log(request.url)
+  console.log(request.nextUrl.pathname)
 
-  if (!token && request.url !== '/login') {
+  if (!token && request.nextUrl.pathname !== '/login') {
     return NextResponse.redirect("/login");
   };
 
-  if(token && request.url === '/login') {
+  if(token && request.nextUrl.pathname === '/login') {
     return NextResponse.redirect("/");
   }
 
