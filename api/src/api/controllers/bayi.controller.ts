@@ -337,23 +337,17 @@ export async function getBayiler(req: Request, res: Response, next: NextFunction
   //@ts-ignore
   let user: IUser = req.user;
 
-  console.log("COOKIE : "+req.cookies["token"])
-
   try {
 
-    const data = await BayiModel.find({
-      distributor: {
-        $in: user.distributor
-      }
-    })
-      .limit(limit * 1)
-      .skip((page - 1) * limit)
+    const data = await BayiModel.findWithCoords(user.distributor, page, limit);
 
-    const count: any = data.length > 0 ? (await BayiModel.count()) : 0;
+    // const count: any = data.length > 0 ? (await BayiModel.count()) : 0;
+
+    console.log("COUNT : "+data.length)
 
     res.json({
       data: data,
-      totalPages: Math.ceil(count / limit),
+      // totalPages: Math.ceil(count / limit),
       // totalPages : 12,
       currentPage: page
     });

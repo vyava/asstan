@@ -13,20 +13,21 @@ const roles = ['user', 'admin'];
 
 interface BayiStatic {
   findAllBayis(): Promise<IBayiDocument[]>;
-  findBayilerBySehir(sehir : string): Promise<IBayiDocument[]>;
-  findBayilerByUpdatedAt(start : any) : Promise<IBayiDocument[]>;
-  newBayi(bayi : IBayi) : Promise<IBayiDocument>
+  findBayilerBySehir(sehir: string): Promise<IBayiDocument[]>;
+  findBayilerByUpdatedAt(start: any): Promise<IBayiDocument[]>;
+  newBayi(bayi: IBayi): Promise<IBayiDocument>;
+  findWithCoords(distributor: any, page, limit): Promise<IBayiDocument[]>;
 };
 
 class BayiStatic {
   static findAllBayis() {
     return Bayi.find({});
   };
-  static async findBayilerBySehir(sehir : string) {
-    return Bayi.find({il : sehir}).limit(20);
+  static async findBayilerBySehir(sehir: string) {
+    return Bayi.find({ il: sehir }).limit(20);
   }
 
-  static async findBayilerByUpdatedAt(start){
+  static async findBayilerByUpdatedAt(start) {
     return Bayi.find({
       updatedAt: {
         $gte: start
@@ -34,22 +35,38 @@ class BayiStatic {
     })
   };
 
-  static async newBayi(bayi : IBayi){
+  static async newBayi(bayi: IBayi) {
     let result = Bayi.findOneAndUpdate({
-      ruhsatNo : bayi.ruhsatNo
-    }, bayi, {upsert : true});
+      ruhsatNo: bayi.ruhsatNo
+    }, bayi, { upsert: true });
+
+    return result;
+  };
+
+  static async findWithCoords(distributor, page, limit) {
+    let result = Bayi.find({
+      distributor: {
+        $in: distributor
+      },
+      coords: {
+        $exists : true,
+        $ne: null
+      }
+    })
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
 
     return result;
   }
 }
 
 interface BayiClass extends IBayiDocument {
-  getBayiByRuhsatNo(ruhsatNo : string) : IBayiDocument;
+  getBayiByRuhsatNo(ruhsatNo: string): IBayiDocument;
 };
 
 class BayiClass extends Model {
-  getBayiByRuhsatNo(ruhsatNo : string){
-    return this.find({ruhsatNo});
+  getBayiByRuhsatNo(ruhsatNo: string) {
+    return this.find({ ruhsatNo });
   };
 }
 
@@ -84,6 +101,14 @@ const schema = new Schema<IBayiDocument>(
     durum: { type: String, trim: true },
     vergiNo: { type: String, min: 10, max: 11 },
     distributor: [{ type: Schema.Types.ObjectId, ref: 'Dist' }],
+    coords : {
+      lat : {
+        type : String
+      },
+      lng : {
+        type : String
+      }
+    }
     // ruhsatTipleri: { type: String },
     // updatedAt: { type: Date },
     // createdAt: { type: Date }

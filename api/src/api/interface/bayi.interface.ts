@@ -23,6 +23,7 @@ export interface IBayi {
   vergiNo? : string;
   createdAt?: string;
   updatedAt?: string;
+  coords? : Object;
 };
 
 export enum IBayiIndex {
