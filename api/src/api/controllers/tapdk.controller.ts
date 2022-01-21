@@ -98,7 +98,7 @@ const getSourceAll = async (req: Request, res: Response, next: NextFunction) => 
 
   let sehirler = (data as IBayiTapdk[]).map((bayi: any) => bayi.IlAdi);
   // @ts-ignore
-  let distler = _.uniqBy(await getDistIdsByAdres([...new Set(sehirler)]), 'kod') as IDistributorShort[];
+  let distler = _.uniqBy(await getDistIdsByAdres([...new Set(sehirler)]), 'distId') as IDistributorShort[];
 
   let _bayiler = data.map((bayi: IBayiTapdk) => {
     let _bayi: IBayi = {
