@@ -1,6 +1,6 @@
 import * as express from "express";
 const validate = require('express-validation');
-import { getSource } from "../../validations";
+import { getSource, getSourceAll } from "../../validations";
 import * as tapdkController from "../../controllers/tapdk.controller"
 const router = express.Router();
 
@@ -10,4 +10,9 @@ const router = express.Router();
 //         .get(validate(getSource), tapdkController.getSource)
 
 
-// module.exports = router;
+
+router
+.route('/')
+.get(validate(getSourceAll), tapdkController.getSourceAll);
+
+module.exports = router;

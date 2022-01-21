@@ -8,7 +8,13 @@ const requestValidation = {
             gun : Joi.string().uppercase().default("BUGÜN").only(["DÜN", "BUGÜN", "SON_7_GÜN", "TAMAMI", "SON_15_GÜN", "SON_30_GÜN"])
         }
     },
+
+    getSourceAll : {
+        query : {
+            il : Joi.number()
+        }
+    }
 };
 
 
-export const{ getSource } = requestValidation
+export const{ getSource, getSourceAll } = requestValidation
