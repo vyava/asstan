@@ -319,7 +319,7 @@ export async function getDistAll(req: Request, res: Response, next: NextFunction
   try {
     // let { il } = <any>req.query;
     // let iller = il.split(',').map((_: any) => _.turkishToUpper());
-    let dists = await Distributor.find({});
+    let dists = await Distributor.getAll();
     // let dists = await getDistIdsByAdres(iller);
     res.json(dists);
   } catch (err) {

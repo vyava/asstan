@@ -13,8 +13,14 @@ const APIError = require('../utils/APIError');
 interface DistributorStatic {
   getDistsIdByAdres(adres: string[]): any;
   getDistIdByKod(kod: string): any;
+  getAll() : IDistributor[];
 }
 class DistributorStatic {
+
+  static getAll(){
+    return Distributor.find({});
+  }
+
   static async getDistsIdByAdres(iller: string[]) {
     try {
       let distIds = await Distributor.aggregate([
@@ -82,13 +88,9 @@ class DistributorStatic {
   }
 }
 
-interface DistributorClass extends IDistributorDocument {
-  
-}
+interface DistributorClass extends IDistributorDocument { }
 
-class DistributorClass extends Model {
-  
-};
+class DistributorClass extends Model { };
 
 export type DistributorModel = DistributorClass & Document;
 type DistributorType = DistributorClass & DistributorStatic & Model<DistributorModel>;
@@ -151,4 +153,4 @@ const schema = new Schema<IDistributorDocument>(
 schema.loadClass(DistributorStatic);
 schema.loadClass(DistributorClass);
 
-export const Distributor = model<DistributorModel>("Dist", schema) as DistributorType;
+export const Distributor = model<DistributorModel>("Distributor", schema) as DistributorType;

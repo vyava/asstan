@@ -1,7 +1,7 @@
 /* eslint-disable */
 const formHeaders = ({gun, start, end, il}) => {
   return {
-    'draw': 1,
+    'draw': 3,
     'columns[0][data]': 'IlAdi',
     'columns[0][name]': '',
     'columns[0][searchable]': true,
@@ -52,7 +52,7 @@ const formHeaders = ({gun, start, end, il}) => {
     'order[0][column]': 0,
     'order[0][dir]': 'asc',
     'start': 0,
-    'length': 1000,
+    'length': -1,
     'search[value]': '',
     'search[regex]': false,
     'VBasvuruKamuyaAcikAramaAra.IlRefId': il || '',
@@ -63,7 +63,7 @@ const formHeaders = ({gun, start, end, il}) => {
     'VBasvuruKamuyaAcikAramaAra.Ad': '',
     'VBasvuruKamuyaAcikAramaAra.Soyad': '',
     // 'VBasvuruKamuyaAcikAramaAra.TarihAraligiId': gun,
-    'VBasvuruKamuyaAcikAramaAra.FiiliDurumRefId': 116,
+    'VBasvuruKamuyaAcikAramaAra.FiiliDurumRefId': 123,
     'VBasvuruKamuyaAcikAramaAra.MulkuAmirOnayTarihiIlk': start || gun,
     'VBasvuruKamuyaAcikAramaAra.MulkuAmirOnayTarihiSon': end || gun
   }

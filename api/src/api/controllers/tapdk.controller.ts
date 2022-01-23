@@ -96,40 +96,40 @@ const getSourceAll = async (req: Request, res: Response, next: NextFunction) => 
     });
   }
 
-  let sehirler = (data as IBayiTapdk[]).map((bayi: any) => bayi.IlAdi);
+  // let sehirler = (data as IBayiTapdk[]).map((bayi: any) => bayi.IlAdi);
   // @ts-ignore
-  let distler = _.uniqBy(await getDistIdsByAdres([...new Set(sehirler)]), 'distId') as IDistributorShort[];
+  // let distler = _.uniqBy(await getDistIdsByAdres([...new Set(sehirler)]), 'distId') as IDistributorShort[];
 
-  let _bayiler = data.map((bayi: IBayiTapdk) => {
-    let _bayi: IBayi = {
-      il: bayi.IlAdi,
-      ilRefId: bayi.IlRefId,
-      ilce: bayi.IlceAdi,
-      ilceRefId: bayi.IlceRefId,
-      ruhsatNo: bayi.DegreeSicilNo,
-      adiSoyadi: bayi.AdSoyad,
-      adi: bayi.Ad,
-      soyadi: bayi.Soyad,
-      unvan: bayi.Unvan,
-      sinif: bayi.SaticiSinifiAdi,
-      adres: bayi.IkametAdres,
-      durum: bayi.FiiliDurumu,
-      vergiNo: bayi.VergiNo
-    };
+  // let _bayiler = data.map((bayi: IBayiTapdk) => {
+  //   let _bayi: IBayi = {
+  //     il: bayi.IlAdi,
+  //     ilRefId: bayi.IlRefId,
+  //     ilce: bayi.IlceAdi,
+  //     ilceRefId: bayi.IlceRefId,
+  //     ruhsatNo: bayi.DegreeSicilNo,
+  //     adiSoyadi: bayi.AdSoyad,
+  //     adi: bayi.Ad,
+  //     soyadi: bayi.Soyad,
+  //     unvan: bayi.Unvan,
+  //     sinif: bayi.SaticiSinifiAdi,
+  //     adres: bayi.IkametAdres,
+  //     durum: bayi.FiiliDurumu,
+  //     vergiNo: bayi.VergiNo
+  //   };
 
-    let distIds = distler
-      .filter((dist) => dist.districtCode == bayi.IlceRefId)
-      .map((d: any) => new Types.ObjectId(d.distId));
+  //   let distIds = distler
+  //     .filter((dist) => dist.districtCode == bayi.IlceRefId)
+  //     .map((d: any) => new Types.ObjectId(d.distId));
 
-    if (Array.isArray(distIds) && distIds.length > 0) {
-      _bayi.distributor = distIds;
-    }
-    return _bayi;
-  });
+  //   if (Array.isArray(distIds) && distIds.length > 0) {
+  //     _bayi.distributor = distIds;
+  //   }
+  //   return _bayi;
+  // });
 
-  console.log(distler)
+  // console.log(distler)
 
-  res.json({count : _bayiler.length, _bayiler})
+  res.json({count : data.length, data})
 
 };
 
