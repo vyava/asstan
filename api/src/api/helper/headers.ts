@@ -62,8 +62,8 @@ const formHeaders = ({gun, start, end, il}) => {
     'VBasvuruKamuyaAcikAramaAra.VergiNo': '',
     'VBasvuruKamuyaAcikAramaAra.Ad': '',
     'VBasvuruKamuyaAcikAramaAra.Soyad': '',
-    // 'VBasvuruKamuyaAcikAramaAra.TarihAraligiId': gun,
-    'VBasvuruKamuyaAcikAramaAra.FiiliDurumRefId': 123,
+    'VBasvuruKamuyaAcikAramaAra.TarihAraligiId': gun,
+    'VBasvuruKamuyaAcikAramaAra.FiiliDurumRefId': 116,
     'VBasvuruKamuyaAcikAramaAra.MulkuAmirOnayTarihiIlk': start || gun,
     'VBasvuruKamuyaAcikAramaAra.MulkuAmirOnayTarihiSon': end || gun
   }

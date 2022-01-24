@@ -7,6 +7,8 @@ import { updateBayiler } from './bayi.controller';
 import { getDistIdsByAdres } from './dist.controller';
 import * as _ from 'lodash';
 import { IBayi, IBayiTapdk, IDistributorShort } from '../interface';
+import { DataRaw } from "../models/data_raw.model";
+import * as fs from "fs";
 // import { getDate } from '../helper/date';
 /**
  * Get distributor
