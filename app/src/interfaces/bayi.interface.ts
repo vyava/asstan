@@ -7,9 +7,9 @@ export interface IBayi {
     ruhsatNo: string;
     adres: string;
     vergiNo: string;
-    email? : string | Object;
-    coords? : {
-        lat : string;
-        lng : string;
+    email?: string | Object;
+    coords?: {
+        lat: string;
+        lng: string;
     }
 }
