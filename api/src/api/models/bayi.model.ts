@@ -49,7 +49,6 @@ class BayiStatic {
         $in: distributor
       },
       coords: {
-        $exists : true,
         $ne: null
       }
     })
