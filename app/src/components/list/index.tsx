@@ -85,7 +85,7 @@ const Body = ({ rows }: { rows: IBayi[] }) => {
   const { headers, setPagination } = useContext(listContext) as ListContextType;
 
   useEffect(() => {
-    rows.length > 10 ? setPagination(true) : setPagination(false);
+    rows?.length > 10 ? setPagination(true) : setPagination(false);
   }, [rows]);
 
   return (
