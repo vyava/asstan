@@ -46,7 +46,7 @@ class BayiStatic {
   static async findWithCoords(distributor, page, limit) {
     let result = Bayi.find({
       distributor: {
-        $in: distributor
+        $in: [distributor]
       },
       coords: {
         $ne: null
