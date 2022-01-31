@@ -8,7 +8,9 @@ type APIConfig = {
   isRefreshing?: boolean;
   retry?: boolean;
   timeout?: number | undefined;
-}
+};
+
+type REQUEST_METHOD = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export default class API {
   private instance: AxiosInstance;
@@ -87,7 +89,9 @@ export default class API {
     return error
   };
 
-  async request(method: any, url: string, reqOptions: AxiosRequestConfig = {}, settings : any = {}) {
+  
+
+  async request<T>(method: REQUEST_METHOD, url: string, reqOptions: AxiosRequestConfig = {}, settings : any = {}) : Promise<T | AxiosError> {
     const { headers, data, params, ...options } = reqOptions;
     const axiosOptions = {
       timeout: this.timeout,
@@ -123,8 +127,8 @@ export default class API {
     }
   }
 
-  get(url: string, params?: AxiosRequestConfig, options = {}) {
-    return this.request('GET', url, {
+  get<T = Object, R = any>(url: string, params?: T, options = {}) : R | any {
+    return this.request<R>('GET', url, {
       params,
       ...options
     })
