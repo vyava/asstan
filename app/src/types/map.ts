@@ -1,66 +1,83 @@
-import { Type, Expose } from 'class-transformer';
-import { GeoJsonObject, LineString, Point, Position } from 'geojson';
-import { columnToHeader } from 'src/utils/common_helper';
-import { Code } from './code';
+import { GeoJsonObject, LineString, Point, Position, Polygon } from 'geojson';
+import { IBayi } from 'src/interfaces/bayi.interface';
+import { ITown } from 'src/interfaces/town.interface';
 
 interface MapRange {
     start: string;
     end: string;
 }
 
+type BoundingBox = number[];
+type Coordinate = {lat: number, lng: number};
+
 type OnlySelectedCritters = {
     show: boolean;
     critter_ids: string[];
 }
 
-type PingGroupType = 'critter_id' | 'collar_id';
-type DetailsSortOption = 'wlh_id' | 'device_id' | 'frequency' | 'date_recorded';
+type PingGroupType = 'ilce' | 'sinif';
+type DetailsSortOption = 'il' | 'ilce' | 'sinif' | 'durum';
 type OnPanelRowSelect = (ids: number[]) => void;
 
-interface ITelemetryDetail extends ICollarTelemetryBase {
+interface LocationBase extends Coordinate {
+    polygons : Position;
+    boundingbox : BoundingBox
+}
+
+interface IBayiDetail {
     critter_id: string;
     mortality_date: Date;
     date_recorded: Date;
     device_vendor: string;
-}
+};
 
-export interface ICollarBase {
-    readonly collar_id: any;
-  }
-  export interface ICollarTelemetryBase extends ICollarBase {
-    device_id: number;
-    device_status: Code;
-    frequency: number;
-  }
-
-interface ITelemetryPoint extends GeoJsonObject {
+interface IBayiPoint extends GeoJsonObject {
     type: 'Feature';
     geometry: Point;
-    id: number;
-    properties: ITelemetryDetail;
+    id: string;
+    coords : Coordinate;
+    properties: Pick<IBayi, any>;
 }
+
+interface ITownDetail extends LocationBase {
+    name : string;
+    city : string;
+    districts : string[];
+};
+
+interface ITownLine extends GeoJsonObject {
+    type: 'Feature',
+    geometry: Polygon;
+    id: number;
+    properties: Pick<ITown, any>;
+};
+
+interface ITownQuery {
+    city : string;
+    town : string;
+};
 
 // represents a track
-interface ITelemetryLine extends GeoJsonObject {
+interface IBayiLine extends GeoJsonObject {
     type: 'Feature';
-    properties: Pick<ITelemetryDetail, any>
+    properties: Pick<IBayiDetail, any>
     geometry: LineString
 }
 
-interface IUnassignedTelemetryLine extends GeoJsonObject {
+interface IUnassignedBayiLine extends GeoJsonObject {
     type: 'Feature';
-    properties: Pick<ITelemetryDetail, any>
+    properties: Pick<IBayiDetail, any>
     geometry: LineString
 }
 
-// a grouped by critter_id version of @type {ITelemetryPoint} 
-interface ITelemetryGroup {
-    collar_id: string;
-    critter_id: string;
-    device_id: number;
-    frequency: number;
+// a grouped by critter_id version of @type {IBayiPoint} 
+interface IBayiGroup {
+    il: string;
+    ilce: string;
+    sinif: string;
+    durum: string;
     count: number;
-    features: ITelemetryPoint[];
+    features: IBayiPoint[];
 }
 
 // determines if a single coordinate array can be found in a group of coordinates
@@ -82,16 +99,20 @@ const padFrequency = (num: number): string => {
 }
 
 export type {
-    ITelemetryDetail,
     MapRange,
+    ITownLine,
+    ITownQuery,
+    IBayiDetail,
+    ITownDetail,
     OnPanelRowSelect,
     DetailsSortOption,
     OnlySelectedCritters,
-    ITelemetryLine,
-    IUnassignedTelemetryLine,
-    ITelemetryPoint,
-    ITelemetryGroup,
+    IBayiLine,
+    IUnassignedBayiLine,
+    IBayiPoint,
+    IBayiGroup,
     PingGroupType,
+    Coordinate
 };
 
 export {
