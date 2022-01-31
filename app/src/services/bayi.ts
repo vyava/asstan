@@ -1,12 +1,13 @@
 import FileSaver from "file-saver";
 import { ENDPOINTS } from "src/utils/endpoints";
 import API from "src/services/API";
+import { IBayi } from "src/interfaces/bayi.interface";
 
 class BayiService extends API {
     constructor(){
         super({url : "bayiler"})
     }
-    getBayiler = (params: any) => this.get(ENDPOINTS.BAYILER, params, {
+    getBayiler = (params: any) : Promise<IBayi[]> => this.get(ENDPOINTS.BAYILER, params, {
         responseType: "json",
     }).then(res => res);
 
@@ -17,7 +18,7 @@ class BayiService extends API {
         //     type : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         // }));
 
-        let blob = new Blob([res], {
+        let blob = new Blob([(res as any)], {
             type : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         });
 

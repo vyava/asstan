@@ -1,6 +1,6 @@
 import * as L from 'leaflet';
 import { getFillColorByStatus, getOutlineColor, MAP_COLOURS, MAP_COLOURS_OUTLINE } from 'src/components/map/map_helpers';
-import { ITelemetryPoint } from 'src/types/map';
+import { IBayiPoint } from 'src/types/map';
 
 const defaultPointStyle: L.CircleMarkerOptions = {
   radius: 8,
@@ -17,7 +17,7 @@ const selectedPointStyle = (): L.CircleMarkerOptions => {
   }
 }
 
-const animalColoredPointStyle = (ping: ITelemetryPoint, isUnassigned: boolean): L.CircleMarkerOptions => {
+const animalColoredPointStyle = (ping: IBayiPoint, isUnassigned: boolean): L.CircleMarkerOptions => {
   const fillColor = isUnassigned ? MAP_COLOURS['unassigned point'] : getFillColorByStatus(ping);
   const color = isUnassigned ?  MAP_COLOURS_OUTLINE['unassigned point'] : getOutlineColor(ping);
   return {
@@ -39,7 +39,7 @@ const latestSelectedPingIcon = createLatestPingIcon(MAP_COLOURS.selected);
 // the icon is replaced when the marker is clicked
 const setupLatestPingOptions = (pings: L.GeoJSON, clickHandler: L.LeafletEventHandlerFn, closeHandler: L.LeafletEventHandlerFn, isUnassigned: boolean): void => {
   pings.options = {
-    pointToLayer: (feature: ITelemetryPoint, latlng: L.LatLngExpression): L.Layer => {
+    pointToLayer: (feature: IBayiPoint, latlng: L.LatLngExpression): L.Layer => {
       const unselectedIcon = createLatestPingIcon(isUnassigned ?  MAP_COLOURS['unassigned point'] : getFillColorByStatus(feature), isUnassigned ? MAP_COLOURS_OUTLINE['unassigned point'] : getOutlineColor(feature));
       const marker = new L.Marker(latlng, {icon: unselectedIcon});
       // make a hidden popup that will help deal with click events
@@ -88,7 +88,7 @@ const highlightPings = (layer: L.GeoJSON, selectedIDs: number[]): void => {
 // when a ping is clicked/unselected, only the point style is changed
 const setupPingOptions = (pings: L.GeoJSON, clickHandler: L.LeafletEventHandlerFn, closeHandler: L.LeafletEventHandlerFn , isUnassigned: boolean): void => {
   pings.options = {
-    pointToLayer: (feature: ITelemetryPoint, latlng: L.LatLngExpression): L.Layer => {
+    pointToLayer: (feature: IBayiPoint, latlng: L.LatLngExpression): L.Layer => {
       const critterStyle = animalColoredPointStyle(feature, isUnassigned);
       const marker = L.circleMarker(latlng, critterStyle);
       marker.bindPopup('', {className:'marker-popup' }).openPopup();

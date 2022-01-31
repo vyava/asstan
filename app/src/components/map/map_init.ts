@@ -3,7 +3,7 @@ import { FeatureLayer } from 'esri-leaflet';
 import { MutableRefObject } from "react";
 import { MapStrings, MapTileLayers } from 'src/utils/constants';
 import { plainToClass } from 'class-transformer';
-import { ITelemetryPoint } from 'src/types/map';
+import { IBayiPoint } from 'src/types/map';
 import dayjs from 'dayjs';
 import { formatLocal } from 'src/utils/time';
 
