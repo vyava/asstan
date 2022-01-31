@@ -6,9 +6,10 @@ export interface ITown {
     city : string;
     districts : string[];
     geolocation : {
-        lat : string;
-        lng : string;
-        polygons : [Position[]]
+        lat : number;
+        lng : number;
+        polygons : [Position[]],
+        position : [number, number]
     };
     boundingbox : string[];
 }
