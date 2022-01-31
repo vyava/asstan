@@ -9,7 +9,9 @@ export interface IBayi {
     vergiNo: string;
     email?: string | Object;
     coords?: {
-        lat: string;
-        lng: string;
-    }
+        lat: number;
+        lng: number;
+    };
+    createdAt : Date;
+    updatedAt : Date;
 }
