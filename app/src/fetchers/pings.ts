@@ -9,7 +9,7 @@ import { getPositionFromCoords } from "src/components/map/map_helpers";
    *
    */
 const usePings = (start?: string, end?: string): UseQueryResult<IBayiPoint[], AxiosError> => {
-    return useQuery<IBayiPoint[], AxiosError>(
+    return useQuery(
         ['pings', { start, end }],
         async () => {
             let bayiler = await BayiService.getBayiler({});
@@ -25,9 +25,13 @@ const usePings = (start?: string, end?: string): UseQueryResult<IBayiPoint[], Ax
                     id : ruhsatNo,
                     coords : coords,
                     properties : rest
-                } as IBayiPoint
+                }
             });
             return pings
+        },
+        {
+            keepPreviousData : true,
+            staleTime: Infinity
         }
     );
 };
