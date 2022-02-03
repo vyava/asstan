@@ -343,8 +343,6 @@ export async function getBayiler(req: Request, res: Response, next: NextFunction
 
     const count: any = data.length > 0 ? (await BayiModel.count()) : 0;
 
-    console.log("COUNT : "+data.length)
-
     res.json({
       data: data,
       totalPages: Math.ceil(count / limit),

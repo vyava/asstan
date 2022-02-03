@@ -13,11 +13,6 @@ import * as passport from "passport";
 
 const router = express.Router();
 
-var matchQueryString = function(req, res, next) {
-  console.log("TYPE : " +JSON.stringify(req.query))
-  if(!req.query.type && req.query.type !== 'xls') return next();
-};
-
 router
   .route("/")
   .get(passport.authenticate("cookie", {session: false}), controller.getBayiler);

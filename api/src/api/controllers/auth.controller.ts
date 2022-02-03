@@ -45,7 +45,6 @@ export async function verify(req: Request, res: Response, next: NextFunction) {
 export async function login(req: Request, res: Response, next: NextFunction) {
     try {
         let user: IUser = req.user;
-
         const access_token = jwt.sign({ _id: user._id }, config.JWT_SECRET, { expiresIn: '1d' });
         res.cookie("token", access_token, {
             httpOnly : true,
@@ -61,6 +60,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
 
 export async function logout(req: Request, res: Response, next: NextFunction) {
     try {
+        req.user = null;
         res.clearCookie('token');
         res.status(200).json("signout successfull")
     } catch (error) {

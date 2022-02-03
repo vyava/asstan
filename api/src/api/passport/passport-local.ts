@@ -2,14 +2,17 @@ import * as passport from "passport";
 const LocalStrategy = require('passport-local').Strategy;
 import { User } from "../models/user.model";
 
-passport.serializeUser((user : any, done) => {
-    done(null, user._id);
- });
- 
- passport.deserializeUser(async (_id: string, done) => {
-   const USER = await User.getUser(_id);
-   done(null, USER);
- });
+// passport.serializeUser((user : any, done) => {
+//     console.log("PASSPORT serializeUser")
+//     done(null, user._id);
+//  });
+
+//  passport.deserializeUser(async (_id: string, done) => {
+//     console.log("PASSPORT deserializeUser")
+
+//    const USER = await User.getUser(_id);
+//    done(null, USER);
+//  });
 
 // use local strategy
 export const localStrategy = new LocalStrategy({
@@ -22,15 +25,15 @@ export const localStrategy = new LocalStrategy({
         let token = req.cookies['token'];
 
         let error = new Error();
-        
-        if(token){
+
+        if (token) {
             error.message = "User is already logged in";
             return done(error, null)
         };
 
         let user = await User.getUserByEmail(email);
-        
-        if(!user) {
+
+        if (!user) {
             error.message = "Username or password inccorect";
             return done(error, null);
         }

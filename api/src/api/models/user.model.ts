@@ -1,5 +1,6 @@
 import { Model, Document, Schema, model } from "mongoose";
 import { IUserDocument, IUser, INewUser } from "../interface";
+import * as jwt from "jsonwebtoken";
 import * as bcrypt from "bcrypt";
 import { randomBytes, pbkdf2Sync } from "crypto";
 
@@ -10,7 +11,7 @@ interface UserStatic {
     createUser(user: INewUser): Promise<IUser>;
     genPassword(password: string): any;
     findAndGenerateToken(payload: { email: string, password: string }): INewUser;
-    getUserByToken(token : string) : Promise<IUser>
+    getUserByToken(token: string): Promise<IUser>
 };
 
 class UserStatic {
@@ -30,8 +31,9 @@ class UserStatic {
         return user
     };
 
-    static getUserByToken(token : string){
-        return User.findOne({token});
+    static getUserByToken(token: string) {
+        let { _id } = jwt.decode(token) as any;
+        return User.findOne({ _id });
     }
 
     static getUser(id: string) {
@@ -88,7 +90,7 @@ class UserClass extends Model {
         this.password = password;
     };
 
-    async validatePassword (password) {
+    async validatePassword(password) {
         return bcrypt.compareSync(password, this.hash)
     }
 };
@@ -97,23 +99,20 @@ class UserClass extends Model {
 export type UserModel = UserClass & Document;
 type UserType = UserClass & UserStatic & Model<UserModel>;
 
-
-const mailReceiverSchema: Schema = new Schema({
-    address: {
-        type: String,
-        required: false,
-        unique: false,
-        sparse: true
-    },
-    name: {
-        type: String,
-        required: false
-    }
-})
-
 const schema = new Schema<IUserDocument>({
     name: { type: String, required: false },
-    email: mailReceiverSchema,
+    email: {
+        address: {
+            type: String,
+            required: true,
+            unique: false,
+            sparse: true
+        },
+        name: {
+            type: String,
+            required: true
+        }
+    },
     taskName: {
         type: String,
         enum: ["rsm", "dsm", "tte", "operator", "Tanımsız"],
