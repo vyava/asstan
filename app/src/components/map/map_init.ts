@@ -1,6 +1,6 @@
 import * as L from 'leaflet';
 import { FeatureLayer } from 'esri-leaflet';
-import { MutableRefObject } from "react";
+import { MutableRefObject, useRef } from "react";
 import { MapStrings, MapTileLayers } from 'src/utils/constants';
 import { plainToClass } from 'class-transformer';
 import { IBayiPoint } from 'src/types/map';
@@ -18,7 +18,9 @@ export const initMap = (
     handleDrawLine: (l: any) => void,
     handleDeleteLine: () => void,
 ): void => {
-    mapRef.current = L.map('map', { zoomControl: true }).setView([41.015137, 28.979530], 4);
+    // mapRef.current = L.map('map', { zoomControl: true }).setView([41.015137, 28.979530], 4);
+    mapRef = useRef<L.Map>(null) as MutableRefObject<L.Map>;
+
 
     // @ts-ignore
     const layerPicker = L.control.layers(null, null, { position: 'topleft' });

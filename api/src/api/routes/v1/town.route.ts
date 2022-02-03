@@ -6,6 +6,6 @@ const router = express.Router();
 // GET /v1/town?cities={cityNames}
 router
     .route('/')
-    .get(townController.getTownsByCityNames);
+    .post(townController.getTownsByCityNames);
 
 module.exports = router;

@@ -36,7 +36,7 @@ interface IBayiPoint extends GeoJsonObject {
     geometry: Point;
     id: string;
     coords : Coordinate;
-    properties: Pick<IBayi, any>;
+    properties: IBayi;
 }
 
 interface ITownDetail extends LocationBase {

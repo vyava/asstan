@@ -8,6 +8,7 @@ const userRoute = require('./user.route');
 const tapdkRoute = require('./tapdk.route');
 const mailRoute = require('./mail.route');
 const taskRoute = require('./task.route');
+const townRoute = require('./town.route');
 const incomingRoute = require('./incoming.route');
 import * as passport from "passport";
 const router = express.Router();
@@ -30,5 +31,6 @@ router.use('/user', userRoute);
 router.use('/tapdk', tapdkRoute)
 router.use('/mail', mailRoute);
 router.use('/task', taskRoute);
+router.use('/town', townRoute);
 router.use('/incoming', incomingRoute);
 module.exports = router;

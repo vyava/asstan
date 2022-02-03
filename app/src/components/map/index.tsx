@@ -4,6 +4,7 @@ import * as L from 'leaflet'; // must be imported first;
 import 'leaflet-draw';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import 'leaflet/dist/leaflet.css';
+import * as _ from "lodash";
 
 import styles from "./map.module.scss";
 import MapSidebar from "./sidebar";
@@ -23,11 +24,23 @@ const MapField = dynamic(() => import("src/components/map/search/index"), { ssr:
 const Map = () => {
 
     // store the selection shapes
-    const drawnItems = new L.FeatureGroup();
-    const drawnLines: Array<any> = [];
+    // const drawnItems = new L.FeatureGroup();
+    // const drawnLines: Array<any> = [];
 
     const { isFetching: fetchingPings, isError: isErrorPings, data: fetchedPings } = usePings();
-    // const { isFetching: fetchingTowns, isError: isErrorTowns, data: fetchedTowns } = useTowns(["İSTANBUL"]);
+    
+    // let towns = !!fetchedPings ? fetchedPings.map(ping => ({city : ping.properties.il, town : ping.properties.ilce})) : [];
+
+    // let uniqueTowns = _.uniqBy(towns, v => [v.city, v.town].join());
+
+    // _.uniqBy(towns, function(elem) {
+    //     return JSON.stringify(_.pick(elem, ['city', 'town']));
+    // });
+
+    // console.log(towns)
+    // console.log(uniqueTowns)
+
+    // const { isFetching: fetchingTowns, isError: isErrorTowns, data: fetchedTowns } = useTowns(uniqueTowns, { enabled : !!fetchedPings});
 
     const [range, setRange] = useState<MapRange>({
         start: dayjs().subtract(7, 'day').format(formatDay),
@@ -65,7 +78,8 @@ const Map = () => {
                     setPings(fetchedPings);
                 }
             }
-        }
+        };
+        update();
     }, [fetchedPings]);
 
 

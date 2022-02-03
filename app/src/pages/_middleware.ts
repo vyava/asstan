@@ -12,9 +12,6 @@ export async function setUserCookie(
 ) {
   const token = request.cookies["token"];
 
-  console.log("TOKEN FOUND : "+token)
-  console.log(request.nextUrl.pathname)
-
   if (!token && request.nextUrl.pathname !== '/login') {
     return NextResponse.redirect("/login");
   };

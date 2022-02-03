@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, MutableRefObject } from "react";
 import * as L from 'leaflet'; // must be imported first;
 import styles from "./search.module.scss";
 import { initMap } from "src/components/map/map_init";
-import { IBayiPoint, ITown, MapRange, OnlySelectedCritters, OnPanelRowSelect } from "src/types/map";
+import { IBayiPoint, MapRange, OnlySelectedCritters, OnPanelRowSelect } from "src/types/map";
 
 export type MapSearchBaseProps = {
     handleRowSelected: OnPanelRowSelect;
@@ -11,7 +11,7 @@ export type MapSearchBaseProps = {
 
 export type MapSearchProps = MapSearchBaseProps & {
     pings: IBayiPoint[];
-    towns : ITown;
+    towns :  any// ITown;
     unassignedPings: IBayiPoint[];
     // Bayi IDs of points that have a device/animal attached
     selectedAssignedIDs: number[];
@@ -34,34 +34,34 @@ const MapSearch = ({
     const mapRef = useRef<L.Map>(null) as MutableRefObject<L.Map>;
 
     // initialize the map
-    useEffect(() => {
-        const updateComponent = (): void => {
-            if (!mapRef.current) {
-                initMap(mapRef,  /* drawnItems ,*/ selectedPingsLayer, handleDrawShape, handleDrawLine, handleDeleteLine);
-            }
-            // tracksLayer.bringToBack();
-        };
-        updateComponent();
-    });
+    // useEffect(() => {
+    //     const updateComponent = (): void => {
+    //         if (!mapRef.current) {
+    //             initMap(mapRef,  /* drawnItems ,*/ selectedPingsLayer, handleDrawShape, handleDrawLine, handleDeleteLine);
+    //         }
+    //         // tracksLayer.bringToBack();
+    //     };
+    //     updateComponent();
+    // });
 
-    // Assing pings
-    useEffect(() => {
-        const update = (): void => {
-            setupPingOptions(pingsLayer, handlePointClick, handlePointClose, false);
+    // // Assing pings
+    // useEffect(() => {
+    //     const update = (): void => {
+    //         setupPingOptions(pingsLayer, handlePointClick, handlePointClose, false);
 
-            setPings(fetchedPings);
-            // @ts-ignore
-            applyPingsToMap(fetchedPings);
-        };
+    //         setPings(fetchedPings);
+    //         // @ts-ignore
+    //         applyPingsToMap(fetchedPings);
+    //     };
 
-        update();
-    });
+    //     update();
+    // });
 
     // handles the drawing and deletion of shapes, setup in map_init
     // todo: does not handle unassigned layers yet
     const handleDrawShape = (): void => {
         // hidePopup();
-        const clipper = drawnItems.toGeoJSON();
+        // const clipper = drawnItems.toGeoJSON();
 
         // const pings = pingsLayer.toGeoJSON();
         // const overlay = pointsWithinPolygon(pings as any, clipper as any);
@@ -83,31 +83,31 @@ const MapSearch = ({
     // };
 
 
-    const applyPingsToMap = (pings: IBayiPoint[]): void => {
-        if (!fetchedPings) {
-            return;
-        };
+    // const applyPingsToMap = (pings: IBayiPoint[]): void => {
+    //     if (!fetchedPings) {
+    //         return;
+    //     };
 
-        var century21icon = L.icon({
-            iconUrl: 'https://amberbrantjes.nl/wp-content/uploads/2015/10/map-marker-icon.png',
-            iconSize: [20, 20]
-        });
+    //     var century21icon = L.icon({
+    //         iconUrl: 'https://amberbrantjes.nl/wp-content/uploads/2015/10/map-marker-icon.png',
+    //         iconSize: [20, 20]
+    //     });
 
-        let _pings = pings.map((p: IBayiPoint) => {
-            L.marker([parseFloat(p.coords?.lat as any), parseFloat(p.coords?.lng as any)], {
-                icon: century21icon,
-                title: p.properties.unvan,
-                alt: p.properties.unvan
-            }).addTo(mapRef.current)
-        });
-        // selectedPingsLayer.addData(_pings);
+    //     let _pings = pings.map((p: IBayiPoint) => {
+    //         L.marker([parseFloat(p.coords?.lat as any), parseFloat(p.coords?.lng as any)], {
+    //             icon: century21icon,
+    //             title: p.properties.unvan,
+    //             alt: p.properties.unvan
+    //         }).addTo(mapRef.current)
+    //     });
+    //     // selectedPingsLayer.addData(_pings);
 
-        // const uniqueCritterIDs = getUniqueCritterIDsFromSelectedPings(
-        //   p,
-        //   pings.map((p : any) => p.id)
-        // );
+    //     // const uniqueCritterIDs = getUniqueCritterIDsFromSelectedPings(
+    //     //   p,
+    //     //   pings.map((p : any) => p.id)
+    //     // );
 
-    };
+    // };
 
 
     return (

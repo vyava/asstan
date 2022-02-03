@@ -8,7 +8,7 @@ import { ITownLine, ITownQuery } from "src/types/map";
 /**
    *
    */
-const useTowns = ( query : ITownQuery | ITownQuery[]): UseQueryResult<ITownLine[], AxiosError> => {
+const useTowns = ( query : ITownQuery | ITownQuery[], options): UseQueryResult<ITownLine[], AxiosError> => {
     
     let townQuery = [].concat(query) as ITownQuery[];
 
@@ -30,7 +30,8 @@ const useTowns = ( query : ITownQuery | ITownQuery[]): UseQueryResult<ITownLine[
                 } as ITownLine
             });
             return townPolygons
-        }
+        },
+        options
     );
 };
 

@@ -3,13 +3,24 @@ import { ITown } from "../interface/town.interface";
 
 
 interface TownStatic {
-    getTownsByCityNames(cities: string[]): Promise<ITown[]>;
+    getTownsByCityNames(query: Object[]): Promise<ITown[]>;
 };
 
 class TownStatic {
-    static getTownsByCityNames(cities: string[]) {
+    static getTownsByCityNames(query: Object[]) {
         return Town.find({
-            name: { $in: cities }
+            $and: [
+                { city: { $in: query.map((q: any) => q.city) } },
+                { name: { $in: query.map((q: any) => q.town) } }
+            ],
+        }, {
+            "city": 1,
+            "name": 1,
+            "geolocation": {
+                "lat": 1,
+                "lng": 1,
+                "position" : 1
+            }
         });
     };
 }
@@ -27,17 +38,17 @@ type TownType = TownClass & TownStatic & Model<TownModel>;
 const schema: Schema = new Schema({
     name: { type: String },
     city: {
-        type: Array
+        type: String
     },
     districts: {
         type: Array
     },
     geolocation: {
         lat: { type: Number },
-        lon: { type: Number },
-        polyhons: { type: Array },
+        lng: { type: Number },
+        polygons: { type: Array },
         boundingbox: { type: Array },
-        position : [Number, Number]
+        position: { type : Array }
     }
 }, {
     collection: "towns"

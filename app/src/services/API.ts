@@ -134,10 +134,8 @@ export default class API {
     })
   };
 
-  post(url: string, data?: any, options = {}) {
-    console.log("OPTIONS : "+JSON.stringify(options))
-    console.log("DATA : "+JSON.stringify(data))
-    return this.request('POST', url, {
+  post<T = Object, R = any>(url: string, data?: T, options = {}) :R | any {
+    return this.request<R>('POST', url, {
       data,
       ...options
     });

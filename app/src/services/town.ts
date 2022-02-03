@@ -5,9 +5,9 @@ import { ITownQuery } from "src/types/map";
 
 class TownService extends API {
     constructor(){
-        super({url : "towns"})
+        super({url : "town"})
     }
-    getTowns = (params: ITownQuery[]) : Promise<ITown[]> => this.get<ITownQuery[], ITown[]>(ENDPOINTS.TOWNS, params, {
+    getTowns = (params: ITownQuery[]) : Promise<ITown[]> => this.post<ITownQuery[], ITown[]>(ENDPOINTS.TOWNS, params, {
         responseType: "json",
     }).then(res => res);
 };

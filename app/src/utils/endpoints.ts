@@ -3,7 +3,7 @@ import { API_URL } from "src/config"
 export const ENDPOINTS = {
     BAYILER : `${API_URL}/bayiler`,
     BAYI : `${API_URL}/bayi`,
-    TOWNS : `${API_URL}/towns`,
+    TOWNS : `${API_URL}/town`,
     LOGIN : `${API_URL}/auth/login`,
     LOGOUT : `${API_URL}/auth/logout`,
     REGISTER : `${API_URL}/auth/register`,
