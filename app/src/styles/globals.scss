@@ -37,7 +37,7 @@ html, body {
 }
 
 body {
-  background-color:#f5f8fb;
+  background-color: var(--base-background-color);
   overflow-x: hidden;
   display: inline-grid;
 }
