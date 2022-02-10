@@ -12,11 +12,11 @@ const bcgw_url = 'http://openmaps.gov.bc.ca/geo/pub/ows';
 
 export const initMap = (
     mapRef: MutableRefObject<L.Map>,
-    drawnItems: L.FeatureGroup,
-    selectedPings: L.GeoJSON,
-    drawSelectedLayer: () => void,
-    handleDrawLine: (l: any) => void,
-    handleDeleteLine: () => void,
+    // drawnItems: L.FeatureGroup,
+    selectedPings: L.GeoJSON<IBayiPoint[]>,
+    // drawSelectedLayer: () => void,
+    // handleDrawLine: (l: any) => void,
+    // handleDeleteLine: () => void,
 ): void => {
     // mapRef.current = L.map('map', { zoomControl: true }).setView([41.015137, 28.979530], 4);
     mapRef = useRef<L.Map>(null) as MutableRefObject<L.Map>;
@@ -28,21 +28,21 @@ export const initMap = (
     L.drawLocal.draw.toolbar.buttons.polygon = MapStrings.drawPolygonLabel;
     L.drawLocal.draw.toolbar.buttons.rectangle = MapStrings.drawRectangleLabel;
 
-    const drawControl = new L.Control.Draw({
-        position: 'topright',
-        draw: {
-            marker: false,
-            circle: false,
-            circlemarker: false
-        },
-        edit: {
-            featureGroup: drawnItems
-        },
-    });
+    // const drawControl = new L.Control.Draw({
+    //     position: 'topright',
+    //     draw: {
+    //         marker: false,
+    //         circle: false,
+    //         circlemarker: false
+    //     },
+    //     edit: {
+    //         featureGroup: drawnItems
+    //     },
+    // });
 
 
     // mapRef.current.addControl(drawControl);
-    mapRef.current.addLayer(drawnItems);
+    // mapRef.current.addLayer(drawnItems);
     mapRef.current.addLayer(selectedPings);
 
     addTileLayers(mapRef, layerPicker);

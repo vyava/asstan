@@ -29,18 +29,11 @@ const Map = () => {
 
     const { isFetching: fetchingPings, isError: isErrorPings, data: fetchedPings } = usePings();
     
-    // let towns = !!fetchedPings ? fetchedPings.map(ping => ({city : ping.properties.il, town : ping.properties.ilce})) : [];
+    let towns = !!fetchedPings ? fetchedPings.map(ping => ({city : ping.properties.il, town : ping.properties.ilce})) : [];
 
-    // let uniqueTowns = _.uniqBy(towns, v => [v.city, v.town].join());
+    let uniqueTowns = _.uniqBy(towns, v => [v.city, v.town].join());
 
-    // _.uniqBy(towns, function(elem) {
-    //     return JSON.stringify(_.pick(elem, ['city', 'town']));
-    // });
-
-    // console.log(towns)
-    // console.log(uniqueTowns)
-
-    // const { isFetching: fetchingTowns, isError: isErrorTowns, data: fetchedTowns } = useTowns(uniqueTowns, { enabled : !!fetchedPings});
+    const { isFetching: fetchingTowns, isError: isErrorTowns, data: fetchedTowns } = useTowns(uniqueTowns, { enabled : !!fetchedPings});
 
     const [range, setRange] = useState<MapRange>({
         start: dayjs().subtract(7, 'day').format(formatDay),
@@ -171,7 +164,7 @@ const Map = () => {
 
     return (
         <div className={styles.root}>
-            {/* <MapField /> */}
+            <MapField pings={fetchedPings}/>
             <MapSidebar />
         </div>
     );

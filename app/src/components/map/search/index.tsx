@@ -5,44 +5,44 @@ import { initMap } from "src/components/map/map_init";
 import { IBayiPoint, MapRange, OnlySelectedCritters, OnPanelRowSelect } from "src/types/map";
 
 export type MapSearchBaseProps = {
-    handleRowSelected: OnPanelRowSelect;
+    // handleRowSelected: OnPanelRowSelect;
     // handleShowOverview: OnMapRowCellClick;
 };
 
 export type MapSearchProps = MapSearchBaseProps & {
     pings: IBayiPoint[];
-    towns :  any// ITown;
-    unassignedPings: IBayiPoint[];
+    towns? :  any// ITown;
+    unassignedPings?: IBayiPoint[];
     // Bayi IDs of points that have a device/animal attached
-    selectedAssignedIDs: number[];
-    setShowExportModal: (b: boolean) => void;
+    // selectedAssignedIDs?: number[];
+    // setShowExportModal?: (b: boolean) => void;
     // handler for when 'show only checked' is clicked.
-    handleShowOnlySelected: (o: OnlySelectedCritters) => void;
-    range: MapRange;
+    // handleShowOnlySelected?: (o: OnlySelectedCritters) => void;
+    range?: MapRange;
 };
 
 const MapSearch = ({
     pings,
-    unassignedPings,
-    selectedAssignedIDs,
+    // unassignedPings,
+    // selectedAssignedIDs,
     // handleShowOverview,
-    handleShowOnlySelected,
-    handleRowSelected,
-    setShowExportModal,
-    range
+    // handleShowOnlySelected,
+    // handleRowSelected,
+    // setShowExportModal,
+    // range
 }: MapSearchProps) : JSX.Element => {
     const mapRef = useRef<L.Map>(null) as MutableRefObject<L.Map>;
 
     // initialize the map
-    // useEffect(() => {
-    //     const updateComponent = (): void => {
-    //         if (!mapRef.current) {
-    //             initMap(mapRef,  /* drawnItems ,*/ selectedPingsLayer, handleDrawShape, handleDrawLine, handleDeleteLine);
-    //         }
-    //         // tracksLayer.bringToBack();
-    //     };
-    //     updateComponent();
-    // });
+    useEffect(() => {
+        const updateComponent = (): void => {
+            if (!mapRef.current) {
+                // initMap(mapRef,  /* drawnItems ,*/ pings as any, /* handleDrawShape, handleDrawLine, handleDeleteLine */);
+            }
+            // tracksLayer.bringToBack();
+        };
+        updateComponent();
+    });
 
     // // Assing pings
     // useEffect(() => {
