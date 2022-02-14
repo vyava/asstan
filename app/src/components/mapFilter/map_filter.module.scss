@@ -1,0 +1,11 @@
+.root {
+    @apply flex p-3 bg-white mb-1;
+};
+
+.filter_items {
+    @apply flex flex-row;
+}
+
+.filter_item {
+    @apply p-2;
+}

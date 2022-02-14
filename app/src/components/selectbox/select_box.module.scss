@@ -1,0 +1,19 @@
+.root {
+    @apply relative;
+};
+
+.button {
+    @apply text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-2 text-center inline-flex items-center 2xl:bg-blue-600 2xl:hover:bg-blue-700 2xl:focus:ring-blue-800;
+};
+
+.hidden_box {
+    @apply absolute z-10 w-44 text-base list-none bg-white rounded divide-y divide-gray-100 shadow 2xl:bg-gray-700 2xl:divide-gray-600
+};
+
+.list {
+    @apply py-1
+}
+
+.list_item {
+    @apply block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 2xl:hover:bg-gray-600 2xl:text-gray-200 2xl:hover:text-white
+}
