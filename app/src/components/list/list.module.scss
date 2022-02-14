@@ -2,7 +2,7 @@
     @apply
     relative
     pb-6
-    w-full
+    w-full;
 }
 
 .container {
@@ -183,7 +183,8 @@
     py-2
     border border-gray-500
     rounded
-    flex-wrap;
+    flex-wrap
+    bg-white;
 
     & > div {
         @apply
