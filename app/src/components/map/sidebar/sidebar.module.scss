@@ -6,13 +6,15 @@
     rounded-md;
 
     width: 66.66666%;
+    background-color: var(--base-background-color);
 };
 
 .heading {
     @apply
     flex
     gap-2
-    pl-1;
+    p-3
+    bg-white;
 
     & > h2, & > b {
         @apply
