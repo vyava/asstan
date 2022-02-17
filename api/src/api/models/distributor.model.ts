@@ -6,6 +6,7 @@ import '../models/user.model';
 
 // const httpStatus = require('http-status');
 import * as httpStatus from 'http-status';
+import { ITown } from '../interface/town.interface';
 // import { IBayiDocumentModel } from "./bayi.model";
 const APIError = require('../utils/APIError');
 // import * as APIError from "../utils/APIError"
@@ -14,6 +15,7 @@ interface DistributorStatic {
   getDistsIdByAdres(adres: string[]): any;
   getDistIdByKod(kod: string): any;
   getAll() : IDistributor[];
+  getDistrictsByDistIds(query : string[]) : Promise<ITown[]>;
 }
 class DistributorStatic {
 
@@ -85,7 +87,54 @@ class DistributorStatic {
   static async getDistIdByKod(kod : any){
     let _id : any = await Distributor.find({ kod }).select("_id");
     return _id[0]._id
-  }
+  };
+
+  static async getDistrictsByDistIds(query : string[]){
+
+    return Distributor.aggregate([
+      {
+        $match : {
+          _id  : {
+            $in : query
+          }
+        }
+      },
+      {
+        $unwind: "$bolgeData"
+      },
+      {
+        $project: {
+          "_id": null,
+          "city": "$bolgeData.city",
+          "cityCode": "$bolgeData.cityCode",
+          "district": "$bolgeData.district",
+          "districtCode": "$bolgeData.districtCode"
+        }
+      },
+      {
+        $group: {
+          "_id": {
+            "city": "$city",
+            "cityCode": "$cityCode"
+          },
+          "district": {
+            $addToSet: {
+              "name": "$district",
+              "code": "$districtCode"
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          "_id": null,
+          "city": "$_id.city",
+          "cityCOde": "$_id.cityCode",
+          "districts": "$district"
+        }
+      }
+    ]);
+  };
 }
 
 interface DistributorClass extends IDistributorDocument { }

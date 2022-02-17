@@ -6,6 +6,7 @@ import { IUser } from '../interface';
 const config = require("../../config/vars");
 const APIError = require("../utils/APIError");
 import { sendOne } from "./mail.controller";
+import { Distributor } from '../models';
 
 
 export const authenticateJwt = passport.authenticate('jwt', { session: false });
@@ -49,9 +50,11 @@ export async function login(req: Request, res: Response, next: NextFunction) {
         res.cookie("token", access_token, {
             httpOnly : true,
             maxAge : 1 * 24 * 3600000
-        })
+        });
 
-        res.status(200).json({ user, access_token });
+        let districts = await Distributor.getDistrictsByDistIds(user.distributor as any[]);
+
+        res.status(200).json({ user, access_token, districts });
 
     } catch (error) {
         next(error)
