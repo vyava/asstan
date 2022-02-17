@@ -11,6 +11,7 @@ const Dropdown = () => {
     let [isOpen, setOpen] = useState(false);
     let logout = async () => {
         await logoutFetcher();
+        localStorage.removeItem("user");
         router.push('/');
     }
 

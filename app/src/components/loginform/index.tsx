@@ -15,7 +15,6 @@ const LoginForm = () => {
         password: Yup.string(),
       })}
       onSubmit={async ({ email, password }, { setSubmitting, setErrors }) => {
-        console.log(email, password)
         try {
           let result = await AuthService.login({
             email,
@@ -24,7 +23,7 @@ const LoginForm = () => {
 
           console.log(result)
           // LOGIN FETCH
-          
+          localStorage.setItem("user", result);
           setSubmitting(false);
           router.push("/");
         } catch (error) {
