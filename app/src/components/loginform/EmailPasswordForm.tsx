@@ -35,7 +35,7 @@ const EmailPasswordForm = ({ formik }: any) => {
                             </div>
                         </Form>
                         <div className="mt-12 text-sm font-display font-semibold text-primary-400 text-center">
-                            <Link href="password-reset">
+                            <Link href="/password-reset">
                                 <a className={styles.small_link}>Şifremi unuttum</a>
                             </Link>
                         </div>

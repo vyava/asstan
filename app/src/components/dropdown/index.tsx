@@ -31,7 +31,7 @@ const Dropdown = () => {
                         <a className={cls(styles.menu_item)}>Hesap Ayarları</a>
                     </Link>
                     {/* <a href="#" className={cls(styles.menu_item)}>Support</a> */}
-                    <a href="javascript:;" className={cls(styles.menu_item)} onClick={() => logout()}>Çıkış</a>
+                    <a href="#" className={cls(styles.menu_item)} onClick={() => logout()}>Çıkış</a>
                 </div>
             }
         </div>
