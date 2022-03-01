@@ -129,7 +129,7 @@ class DistributorStatic {
         $project: {
           "_id": null,
           "city": "$_id.city",
-          "cityCOde": "$_id.cityCode",
+          "cityCode": "$_id.cityCode",
           "districts": "$district"
         }
       }
