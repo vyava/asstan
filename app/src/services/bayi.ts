@@ -3,8 +3,14 @@ import { ENDPOINTS } from "src/utils/endpoints";
 import {http} from "src/services/API";
 import { IBayi } from "src/interfaces/bayi.interface";
 
+interface DefaultReponse<T=unknown> {
+    data: T;
+    totalPages: number;
+    currentPage: number
+};
+
 class BayiService {
-    getBayiler = (params: any) : Promise<IBayi[]> => http.get(ENDPOINTS.BAYILER, params)
+    getBayiler = (params: any) : Promise<DefaultReponse<IBayi[]>> => http.get(ENDPOINTS.BAYILER, params)
 
     downloadBayiler = (data: any) => http.post(ENDPOINTS.BAYILER, data, {
         responseType: "blob",

@@ -29,7 +29,7 @@ class Http {
     });
 
     http.interceptors.response.use(
-      (response) => response,
+      (response) => response.data,
       (error) => {
         const { response } = error;
         return this.handleError(response);

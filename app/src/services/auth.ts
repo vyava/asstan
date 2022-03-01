@@ -1,6 +1,7 @@
 import { ENDPOINTS } from "src/utils/endpoints";
 import { getLocalStorage } from "src/utils/common";
 import {http} from "./API";
+import { IUser } from "src/types/user";
 
 interface LoginParams {
     email: string;
@@ -17,7 +18,7 @@ class AuthService {
 
     me = () => JSON.parse(getLocalStorage("user") || '{}') || http.post(ENDPOINTS.ME).then(res => res);
 
-    updateMe = (data : any) => http.put(ENDPOINTS.ME, data).then(res => res);
+    updateMe = (data : any) => http.put<IUser>(ENDPOINTS.ME, data).then(res => res);
     
     passwordReset = (data : any) => http.post(ENDPOINTS.PASSWORD_RESET, data).then(res => res);
 };
