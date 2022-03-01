@@ -13,7 +13,7 @@ export const meFetcher = async () : Promise<IUser> => {
     return AuthService.me();
 };
 
-export const updateMeFetcher = async (data : any) : Promise<IUser> => {
+export const updateMeFetcher = async (data : any) => {
     console.log("updateMeFetcher called with data : "+ data)
     return AuthService.updateMe(data);
 };

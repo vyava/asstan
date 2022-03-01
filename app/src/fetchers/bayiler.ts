@@ -7,15 +7,16 @@ const defaultQueryOptions: Pick<UseQueryOptions, 'refetchOnWindowFocus'> = { ref
 
 export const bayiFetcher = async ({queryKey} : any) => {
     const [key, query] = queryKey;
-    if(key == "bayilerExcel"){
-        return BayiService.downloadBayiler(query);
-    }else if(key == 'bayilerJson'){
-        return BayiService.getBayiler(query);
-    }
+    return BayiService.getBayiler(query);
 };
 
-export const useBayiler = (): UseQueryResult<IBayi[], AxiosError>  => {
-    return useQuery<IBayi[], AxiosError>(
+export const bayiDownloadFetcher = async ({queryKey} : any) => {
+    const [key, query] = queryKey;
+    return BayiService.downloadBayiler(query);
+};
+
+export const useBayiler = () => {
+    return useQuery(
         ['bayiler'],
         () => BayiService.getBayiler({}),
         defaultQueryOptions
