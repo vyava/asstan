@@ -14,8 +14,8 @@ const BayilerPage = () => {
   const { page, limit} = router.query;
 
   const { isLoading, error, data, isSuccess } = useQuery(["bayilerJson", { page, limit }], bayiFetcher, {
-    initialData: [],
-    select: res => res
+    initialData: {data : [], currentPage : 0, totalPages : 0},
+    select: res => res.data
   });
 
   return (

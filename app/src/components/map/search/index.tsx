@@ -3,6 +3,8 @@ import * as L from 'leaflet'; // must be imported first;
 import styles from "./search.module.scss";
 import { initMap } from "src/components/map/map_init";
 import { IBayiPoint, MapRange, OnlySelectedCritters, OnPanelRowSelect } from "src/types/map";
+import { ITown } from "src/interfaces/town.interface";
+import { IDistrictUser } from "src/interfaces/district.interface";
 
 export type MapSearchBaseProps = {
     // handleRowSelected: OnPanelRowSelect;
@@ -11,7 +13,7 @@ export type MapSearchBaseProps = {
 
 export type MapSearchProps = MapSearchBaseProps & {
     pings: IBayiPoint[];
-    towns? :  any// ITown;
+    towns? :  IDistrictUser[]// ITown;
     unassignedPings?: IBayiPoint[];
     // Bayi IDs of points that have a device/animal attached
     // selectedAssignedIDs?: number[];

@@ -23,7 +23,7 @@ const LoginForm = () => {
 
           console.log("result : " + JSON.stringify(result))
           // LOGIN FETCH
-          // localStorage.setItem("user", result);
+          localStorage.setItem("user", JSON.stringify(result));
           setSubmitting(false);
           router.push("/");
         } catch (error) {
