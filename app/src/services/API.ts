@@ -1,164 +1,99 @@
-import { Router } from "next/router";
-import axios, { AxiosResponse, AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
-import API_ERROR from "./Error";
-import { APP_DESCRIPTION, APP_URL } from 'src/config';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
-type APIConfig = {
-  url: string;
-  isRefreshing?: boolean;
-  retry?: boolean;
-  timeout?: number | undefined;
+enum StatusCode {
+  Unauthorized = 401,
+  Forbidden = 403,
+  TooManyRequests = 429,
+  InternalServerError = 500,
+}
+
+const headers: Readonly<Record<string, string | boolean>> = {
+  Accept: "application/json",
+  "Content-Type": "application/json; charset=utf-8",
+  "Access-Control-Allow-Credentials": true,
+  "X-Requested-With": "XMLHttpRequest",
 };
 
-type REQUEST_METHOD = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+class Http {
+  private instance: AxiosInstance | null = null;
 
-export default class API {
-  private instance: AxiosInstance;
-  private isRefreshing: boolean;
-  private retry: boolean;
-  private url: string;
-  private timeout: number | undefined;
-
-  constructor({ url, isRefreshing = false, retry = false, timeout = 1000 }: APIConfig) {
-
-    this.url = url;
-    this.isRefreshing = isRefreshing;
-    this.retry = retry;
-    this.timeout = timeout;
-
-    const axiosInstance = axios.create({
-      baseURL: APP_URL,
-      withCredentials : true,
-      headers: {
-        "Content-Type": "application/json",
-        'Access-Control-Allow-Origin': '*'
-      },
-      timeout: this.timeout
-    });
-
-
-    // axiosInstance.interceptors.request.use(this.beforeRequest)
-
-    axiosInstance.interceptors.response.use(this.beforeResponse, this.errorHandler)
-
-    this.instance = axiosInstance;
-  };
-
-  beforeRequest(axiosRequest: AxiosRequestConfig) {
-    return axiosRequest;
+  private get http(): AxiosInstance {
+    return this.instance != null ? this.instance : this.initHttp();
   }
 
-  beforeResponse(response: AxiosResponse) {
-    return response?.data;
-  };
+  initHttp() {
+    const http = axios.create({
+      baseURL: "/api/v1/",
+      headers,
+      withCredentials: true,
+    });
 
-  errorHandler(error: AxiosError | Error) {
-    if ((error as AxiosError).isAxiosError) this.handleAxiosError(error as AxiosError)
-    // return this.handleUnhandleError(error)
-  };
+    http.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        const { response } = error;
+        return this.handleError(response);
+      }
+    );
 
-  handleAxiosError(axiosError: AxiosError) {
-    console.log("handleAxiosError", axiosError)
-    // const { response } = axiosError;
-    // const originalRequest = axiosError.config;
+    this.instance = http;
+    return http;
+  }
 
-    // if (response?.status === 401 && axiosError && originalRequest && !this.retry) {
-    //   if (this.isRefreshing) {
+  request<T = any, R = AxiosResponse<T>>(config: AxiosRequestConfig): Promise<R> {
+    return this.http.request(config);
+  }
 
-    //     try {
-    //       // Get new TOKEN
-    //       let newToken = "" /* getNewtoken(refreshToken) */
+  get<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R> {
+    return this.http.get<T, R>(url, config);
+  }
 
-    //       this.instance.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-    //       originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
+  post<T = any, R = AxiosResponse<T>>(
+    url: string,
+    data?: T,
+    config?: AxiosRequestConfig
+  ): Promise<R> {
+    return this.http.post<T, R>(url, data, config);
+  }
 
-    //       return this.instance(originalRequest);
-    //     } catch (error) {
-    //       // Refresh TOKEN failed
-    //       console.error('Error refreshing the token, logging out', error);
-    //       return response;
-    //     }
-    //   };
+  put<T = any, R = AxiosResponse<T>>(
+    url: string,
+    data?: T,
+    config?: AxiosRequestConfig
+  ): Promise<R> {
+    return this.http.put<T, R>(url, data, config);
+  }
 
-    // }
+  delete<T = any, R = AxiosResponse<T>>(url: string, config?: AxiosRequestConfig): Promise<R> {
+    return this.http.delete<T, R>(url, config);
+  }
 
-    // return axiosError.message;
-  };
+  // Handle global app errors
+  // We can handle generic app errors depending on the status code
+  private handleError(error) {
+    const { status } = error;
 
-  handleUnhandleError(error: Error) {
-    return error
-  };
-
-  
-
-  async request<T>(method: REQUEST_METHOD, url: string, reqOptions: AxiosRequestConfig = {}, settings : any = {}) : Promise<T | AxiosError> {
-    const { headers, data, params, ...options } = reqOptions;
-    const axiosOptions = {
-      timeout: this.timeout,
-      method,
-      url: url,
-      // headers: headers || this.getHeaders(),
-      data: data || {},
-      params: params || {},
-      ...options
-    };
-
-    try {
-      const response = await this.instance(axiosOptions).then(res => res).catch(err => {
-        console.log("CATH ERROR : "+err)
-      });
-
-      const handleResponse = settings.onResponse || this.beforeResponse;
-
-      return handleResponse(response);
-    } catch (error) {
-      // this.log('verbose', { traceId, error: error.toString(), data: error.response?.data, stack: error.stack, type: 'errorOccured' });
-      // const onError = settings.onError || this.errorHandler;
-
-      // onError(error);
-      throw error;
+    switch (status) {
+      case StatusCode.InternalServerError: {
+        // Handle InternalServerError
+        break;
+      }
+      case StatusCode.Forbidden: {
+        // Handle Forbidden
+        break;
+      }
+      case StatusCode.Unauthorized: {
+        // Handle Unauthorized
+        break;
+      }
+      case StatusCode.TooManyRequests: {
+        // Handle TooManyRequests
+        break;
+      }
     }
-  };
 
-  getHeaders() {
-    return {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    }
+    return Promise.reject(error);
   }
-
-  get<T = Object, R = any>(url: string, params?: T, options = {}) : R | any {
-    return this.request<R>('GET', url, {
-      params,
-      ...options
-    })
-  };
-
-  post<T = Object, R = any>(url: string, data?: T, options = {}) :R | any {
-    return this.request<R>('POST', url, {
-      data,
-      ...options
-    });
-  }
-
-  patch(url: string, data?: any, options = {}) {
-    return this.request('PATCH', url, {
-      data,
-      ...options
-    });
-  }
-
-  put(url: string, data?: any, options = {}) {
-    return this.request('PUT', url, {
-      data,
-      ...options
-    });
-  }
-
-  delete(url: string, options = {}) {
-    return this.request('DELETE', url, {
-      ...options
-    });
-  }
-
 }
+
+export const http = new Http();

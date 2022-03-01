@@ -21,16 +21,13 @@ const LoginForm = () => {
             password,
           });
 
-          console.log(result)
+          console.log("result : " + JSON.stringify(result))
           // LOGIN FETCH
-          localStorage.setItem("user", result);
+          // localStorage.setItem("user", result);
           setSubmitting(false);
           router.push("/");
         } catch (error) {
-          console.log("ERROR : "+error);
-          // setErrors(formikErrors)
           setSubmitting(false);
-          console.log(error)
         }
       }}
     >

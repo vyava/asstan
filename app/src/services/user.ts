@@ -1,11 +1,8 @@
 import Axios from "axios";
 import { ENDPOINTS } from "src/utils/endpoints";
-import API from "src/services/API";
+import { http } from "src/services/API";
 
-export class UserService extends API {
-  constructor(){
-    super({url : "user"})
-}
+export class UserService {
   static getUser = (id: string) =>
-    Axios.get(ENDPOINTS.BAYILER, { params: { id } });
+    http.get(ENDPOINTS.BAYILER, { params: { id } });
 }

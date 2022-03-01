@@ -1,17 +1,12 @@
 import FileSaver from "file-saver";
 import { ENDPOINTS } from "src/utils/endpoints";
-import API from "src/services/API";
+import {http} from "src/services/API";
 import { IBayi } from "src/interfaces/bayi.interface";
 
-class BayiService extends API {
-    constructor(){
-        super({url : "bayiler"})
-    }
-    getBayiler = (params: any) : Promise<IBayi[]> => this.get(ENDPOINTS.BAYILER, params, {
-        responseType: "json",
-    }).then(res => res);
+class BayiService {
+    getBayiler = (params: any) : Promise<IBayi[]> => http.get(ENDPOINTS.BAYILER, params)
 
-    downloadBayiler = (data: any) => this.post(ENDPOINTS.BAYILER, data, {
+    downloadBayiler = (data: any) => http.post(ENDPOINTS.BAYILER, data, {
         responseType: "blob",
     }).then(res => {
         // const url = window.URL.createObjectURL(new Blob([res], {
@@ -32,7 +27,7 @@ class BayiService extends API {
         // document.body.appendChild(link);
         // link.click();
     })
-    getBayi = () => this.get(ENDPOINTS.BAYI).then(res => res);
+    getBayi = () => http.get(ENDPOINTS.BAYI).then(res => res);
 };
 
 export default new BayiService;
