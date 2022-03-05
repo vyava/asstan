@@ -12,7 +12,7 @@ import { IBayiDocument, IBayi } from '../interface';
 const roles = ['user', 'admin'];
 
 interface BayiStatic {
-  findAllBayis(): Promise<IBayiDocument[]>;
+  findAllBayis(distributor : any, page : number, limit : number, {cities, towns} : any): Promise<IBayiDocument[]>;
   findBayilerBySehir(sehir: string): Promise<IBayiDocument[]>;
   findBayilerByUpdatedAt(start: any): Promise<IBayiDocument[]>;
   newBayi(bayi: IBayi): Promise<IBayiDocument>;
@@ -20,8 +20,26 @@ interface BayiStatic {
 };
 
 class BayiStatic {
-  static findAllBayis() {
-    return Bayi.find({});
+  static findAllBayis(distributor, page, limit, { cities, towns }) {
+    return Bayi.find({
+      distributor: {
+        $in: [distributor]
+      },
+      $and : [
+        {
+          il : {
+            $in : cities
+          }
+        },
+        {
+          ilce : {
+            $in : towns
+          }
+        }
+      ]
+    })
+    .limit(limit * 1)
+    .skip((page - 1) * limit);
   };
   static async findBayilerBySehir(sehir: string) {
     return Bayi.find({ il: sehir }).limit(20);
