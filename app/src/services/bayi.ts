@@ -10,9 +10,9 @@ interface DefaultReponse<T=unknown> {
 };
 
 class BayiService {
-    getBayiler = (params: any) : Promise<DefaultReponse<IBayi[]>> => http.get(ENDPOINTS.BAYILER, params)
+    getBayiler = (data: any) : Promise<DefaultReponse<IBayi[]>> => http.post(ENDPOINTS.BAYILER, data)
 
-    downloadBayiler = (data: any) => http.post(ENDPOINTS.BAYILER, data, {
+    downloadBayiler = (data: any) => http.post(ENDPOINTS.BAYILER, {data}, {
         responseType: "blob",
     }).then(res => {
         // const url = window.URL.createObjectURL(new Blob([res], {

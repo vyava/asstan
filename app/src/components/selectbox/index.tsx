@@ -1,74 +1,68 @@
 import { useState } from "react";
 import styles from "./select_box.module.scss";
-import Select, { components, DropdownIndicatorProps } from 'react-select';
+import Select, { components, GroupProps } from 'react-select';
 import cls from "classnames";
 import { SelectBoxProps } from "src/components/component_interfaces";
 
-export interface ColourOption {
-    readonly value: string;
-    readonly label: string;
-    readonly color: string;
-    readonly isFixed?: boolean;
-    readonly isDisabled?: boolean;
-  }
-
-export const colourOptions: readonly ColourOption[] = [
-    { value: 'ocean', label: 'Ocean', color: '#00B8D9', isFixed: true },
-    { value: 'blue', label: 'Blue', color: '#0052CC', isDisabled: true },
-    { value: 'purple', label: 'Purple', color: '#5243AA' },
-    { value: 'red', label: 'Red', color: '#FF5630', isFixed: true },
-    { value: 'orange', label: 'Orange', color: '#FF8B00' },
-    { value: 'yellow', label: 'Yellow', color: '#FFC400' },
-    { value: 'green', label: 'Green', color: '#36B37E' },
-    { value: 'forest', label: 'Forest', color: '#00875A' },
-    { value: 'slate', label: 'Slate', color: '#253858' },
-    { value: 'silver', label: 'Silver', color: '#666666' },
-  ];
-
-const DropdownIndicator = (
-    props: DropdownIndicatorProps<ColourOption, true>
-) => {
-    return (
-        <components.DropdownIndicator {...props}>
-            {/* <EmojiIcon label="Emoji" primaryColor={colourOptions[2].color} /> */}
-        </components.DropdownIndicator>
-    );
+const groupStyles = {
+    border: `1px dotted black`,
+    borderRadius: '5px',
 };
 
+export const SelectBox = ({ options = [], defaultOptions, onChange }: SelectBoxProps) => {
 
+    const [selectedOption, setSelectedOption] = useState(defaultOptions); //add initial state
 
-export const SelectBox = ({ options = [] }: SelectBoxProps) => {
+    const customStyles = {
+        option: (provided, state) => ({
+            ...provided,
+            //   color: state.isSelected ? 'red' : 'blue',
+            //   padding: 20,
+        }),
+        control: (provided) => ({
+            ...provided,
+            // none of react-select's styles are passed to <Control />
+            fontSize: '14px',
+            minWidth: "100%",
+            height: '100px',
+              border: '2px solid #040849',
+            alignItems: 'flex-start'
 
-    const [isShown, setIsShown] = useState<boolean>(false);
+        })
+    };
+
+    const formatGroupLabel = data => (
+        <div>
+            <span>{data.label}</span>
+        </div>
+    );
+
+    const handleChange = (selectedOption) => {
+        setSelectedOption(selectedOption);
+        onChange(selectedOption);
+    };
 
     return (
         <div className={styles.root}>
             <Select
+                value={selectedOption}
                 closeMenuOnSelect={false}
-                components={{ DropdownIndicator }}
-                // defaultValue={}
+                options={options}
+                onChange={(values) => handleChange(values)}
+                noOptionsMessage={() => <div>Bulunamadı</div>}
                 isMulti
-                options={colourOptions}
+                styles={customStyles}
+                isSearchable
+                classNamePrefix="cs-"
+                theme={(theme) => ({
+                    ...theme,
+                    colors: {
+                        ...theme.colors,
+                        primary: '#040849'
+                    }
+                })}
+                formatGroupLabel={formatGroupLabel}
             />
-
-            {/* <button className={styles.button} type="button" onClick={() => setIsShown(!isShown)}>
-                Şehir
-            </button>
-
-            <div className={cls(styles.hidden_box, !!isShown ? '' : 'hidden')}>
-                <div className="py-3 px-4 text-gray-900 dark:text-white">
-                    <span className="block text-sm">Bonnie Green</span>
-                    <span className="block text-sm font-medium truncat">name@flowbite.com</span>
-                </div>
-                <ul className={styles.list}>
-                    <li>
-                        <a href="#" className={styles.list_item}>İstanbul</a>
-                    </li>
-                </ul>
-                <div className="py-1">
-                    <a href="#" className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
-                </div>
-            </div> */}
         </div>
     )
 };

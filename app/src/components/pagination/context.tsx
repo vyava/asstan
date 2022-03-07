@@ -8,18 +8,22 @@ export type PaginationContextType = {
     limit : number;
     counter : number;
     itemPerPage: number;
+    pathname : string;
 
     setLimit : (value : number) => void;
     setCounter : (counter : number) => void;
     setItemPerPage : (value : number) => void;
+    setPathname : (value : string) => void
 }
 
 const paginationContext = createContext({} as PaginationContextType);
 
-const PaginationContextProvider = ({children} : any) => {
+const PaginationContextProvider = ({children, config} : any) => {
+    let { _pathname } = config;
     const [itemPerPage, setItemPerPageState] = useState(defaultItemPerPage);
     const [limit, setLimitState] = useState(defaultLimit);
     const [counter, setCounterState] = useState(defaultCounter);
+    const [pathname, setPathNameState] = useState(_pathname);
 
     const setItemPerPage = (value : number) => {
         setItemPerPageState(value);
@@ -31,10 +35,14 @@ const PaginationContextProvider = ({children} : any) => {
 
     const setCounter = (counter : number) => {
         setCounterState(counter);
-    }
+    };
+
+    const setPathname = (value : string) => {
+        setPathNameState(value);
+    };
 
     return (
-        <paginationContext.Provider value={{ itemPerPage, setItemPerPage, limit, setLimit, counter, setCounter }}>
+        <paginationContext.Provider value={{ itemPerPage, setItemPerPage, limit, setLimit, counter, setCounter, pathname, setPathname }}>
             {children}
         </paginationContext.Provider>
     )

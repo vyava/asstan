@@ -6,6 +6,9 @@ import { PaginationContextProvider, paginationContext } from "./context";
 import React, { useContext, useEffect } from "react";
 
 interface PaginationProps {
+    config : {
+        _pathname : string;
+    };
     children: React.ReactNode
 };
 
@@ -21,10 +24,11 @@ interface ItemsProps {
     lmt : number;
 };
 
-const Item = ({ pathname, number, classname, children }: ItemProps) => {
+const Item = ({ number, classname, children }: ItemProps) => {
+    let { pathname } = useContext(paginationContext);
     return <CustomLink className={cls(classname)} to={
         {
-            pathname: '/bayiler',
+            pathname: pathname,
             query: {
                 page: number
             }
@@ -33,7 +37,7 @@ const Item = ({ pathname, number, classname, children }: ItemProps) => {
 }
 
 const Items = ({count, lmt} : ItemsProps) => {
-    let { counter, setCounter, limit, setLimit } = useContext(paginationContext);
+    let { counter, setCounter, limit, setLimit, pathname } = useContext(paginationContext);
 
     useEffect(() => {
         setCounter(count);
@@ -54,7 +58,7 @@ const Items = ({count, lmt} : ItemsProps) => {
                     return (
                         <CustomLink key={i} to={
                             {
-                                pathname: '/bayiler',
+                                pathname: pathname,
                                 query: {
                                     page: item
                                 }
@@ -67,9 +71,9 @@ const Items = ({count, lmt} : ItemsProps) => {
     )
 };
 
-export const Pagination = ({ children }: PaginationProps) => {
+export const Pagination = ({ children, config }: PaginationProps) => {
     return (
-        <PaginationContextProvider>
+        <PaginationContextProvider config={config}>
             <div className={cls(styles.pagination, "")}>
                 {children}
             </div>
@@ -77,7 +81,9 @@ export const Pagination = ({ children }: PaginationProps) => {
     )
 };
 
-Pagination.First = ({ number, pathname }: ItemProps) => {
+Pagination.First = ({ number }: ItemProps) => {
+    let { pathname } = useContext(paginationContext);
+
     return (
         <Item number={number} pathname={pathname} classname="back">
             <Icon name="long-arrow-alt-left" />
@@ -85,7 +91,8 @@ Pagination.First = ({ number, pathname }: ItemProps) => {
     );
 };
 
-Pagination.Prev = ({ number, pathname }: ItemProps) => {
+Pagination.Prev = ({ number }: ItemProps) => {
+    let { pathname } = useContext(paginationContext);
     return (
         <Item number={number} pathname={pathname} classname="back">
             <Icon name="long-arrow-alt-left" />

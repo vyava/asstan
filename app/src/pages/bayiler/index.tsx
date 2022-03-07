@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { bayiFetcher } from "src/fetchers/bayiler";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 
 import List from "src/components/list";
 import MainLayout from "src/layouts/Main";
@@ -18,6 +18,12 @@ const BayilerPage = () => {
     select: res => res.data
   });
 
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    queryClient.invalidateQueries('bayilerJson');
+  }, [page])
+
   return (
     <MainLayout title="Bayiler">
       {error ? (
@@ -26,7 +32,7 @@ const BayilerPage = () => {
         </h1>
       ) : isLoading ? <h1>Yükleniyor..</h1> : (
         (isSuccess && data) ? (
-          <List>
+          <List pagination={true} _pathname="/bayiler">
             <List.Header headers={BAYILER_LIST_HEADERS} />
 
             <List.Body rows={data} />

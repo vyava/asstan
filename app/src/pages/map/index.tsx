@@ -1,10 +1,13 @@
 import MainLayout from "src/layouts/Main";
 import Map from "src/components/map";
+import { MapContextProvider } from "src/contexts/map.context";
 
 const MapPage = () => {
   return (
     <MainLayout title="Map Page">
-      <Map />
+      <MapContextProvider>
+        <Map />
+      </MapContextProvider>
     </MainLayout>
   );
 };

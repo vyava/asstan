@@ -108,6 +108,8 @@ const Body = ({ rows }: { rows: IBayi[] }) => {
               }
             </li>
           ))}
+
+          {rows.length == 0 && <p>Bayi bulunamadı</p>}
       </ul>
     </>
   );
@@ -116,9 +118,10 @@ const Body = ({ rows }: { rows: IBayi[] }) => {
 interface ListPaginationProps {
   limit?: number;
   itemPerPage?: number;
+  pathname? : string;
 }
 
-const ListPagination = ({ limit, itemPerPage }: ListPaginationProps) => {
+const ListPagination = ({ limit, itemPerPage, pathname }: ListPaginationProps) => {
 
   const router = useRouter();
 
@@ -126,16 +129,21 @@ const ListPagination = ({ limit, itemPerPage }: ListPaginationProps) => {
   const page: number = parseInt(router.query.page) || 0;
 
   const { hasPagination } = useContext(listContext) as ListContextType;
+
+  const paginationConfig = {
+    _pathname : pathname
+  }
+
   return (
     <>
       {
         hasPagination &&
-        <Pagination>
-          <Pagination.First number={1} pathname="/bayiler"></Pagination.First>
+        <Pagination config={paginationConfig}>
+          <Pagination.First number={1} pathname={pathname}></Pagination.First>
 
           <Pagination.Items lmt={10} count={page} />
 
-          <Pagination.Last number={10} pathname="/bayiler"></Pagination.Last>
+          <Pagination.Last number={10} pathname={pathname}></Pagination.Last>
         </Pagination>
       }
     </>
@@ -145,16 +153,17 @@ const ListPagination = ({ limit, itemPerPage }: ListPaginationProps) => {
 interface ListProps extends ListPaginationProps {
   pagination?: boolean;
   children: ReactNode[] | ReactNode;
+  _pathname : string;
 }
 
-const List = ({ children, pagination }: ListProps) => {
+const List = ({ children, pagination, _pathname }: ListProps) => {
   return (
     <ListContextProvider>
       <div className={styles.root}>
         <div className={cls(styles.container)}>
           <section className={styles.list}>{children}</section>
         </div>
-        {pagination && <ListPagination limit={100} itemPerPage={10} />}
+        {pagination && <ListPagination limit={100} itemPerPage={10} pathname={_pathname} />}
       </div>
     </ListContextProvider>
   );

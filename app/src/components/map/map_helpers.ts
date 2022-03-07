@@ -357,7 +357,7 @@ const getLast10Points = (group: IBayiGroup[]): IBayiPoint[] => {
  * @returns an array @type {Position}
  */
 const getPositionFromCoords = (position : Coordinate) : Position => {
-    return [position.lat, position.lng];
+    return [position?.lat, position?.lng];
 };
 
 export {

@@ -8,4 +8,6 @@ interface IDistrictBaseType {
     cityCode : number;
 };
 
-export type IDistrictUser = Pick<IDistrictBaseType, "city" | "cityCode"> & [Pick<IDistrictBaseType, "code" | "name">];
+type IDistricts = Pick<IDistrictBaseType, "code" | "name">;
+
+export type IDistrictUser = Pick<IDistrictBaseType, "city" | "cityCode"> & {districts : IDistricts[]};

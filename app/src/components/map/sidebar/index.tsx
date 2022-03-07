@@ -2,35 +2,28 @@ import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import List from "src/components/list";
 import { MapFilter } from "src/components/mapFilter";
-import { bayiFetcher } from "src/fetchers/bayiler";
+import { bayiFetcher, useBayiler } from "src/fetchers/bayiler";
 import styles from "./sidebar.module.scss";
-import { SideBarProps } from "src/components/component_interfaces";
+import { SidebarProps } from "src/components/component_interfaces";
 import { IBayiPoint, ITownLine } from "src/types/map";
+import { IBayi } from "src/interfaces/bayi.interface";
+import { IDistrictUser } from "src/interfaces/district.interface";
+import { useDistricts } from "src/fetchers/districts";
 
-const Sidebar = ({pingsData, townsData} : SideBarProps<IBayiPoint[], ITownLine[]>) => {
-    const router = useRouter();
-
-    const { page, limit } = router.query;
-
-    const { isLoading, error, data, isSuccess } = useQuery(["bayilerJson", { page, limit }], bayiFetcher, {
-        initialData: {data : [], currentPage : 0, totalPages : 0},
-        select: res => res.data
-    });
-
-    console.log(data)
+const MapSidebar = ({ bayilerData }: SidebarProps<IBayi[], IDistrictUser[]>) => {
 
     return (
         <div className={styles.root}>
-            {/* <MapFilter /> */}
-            <div className={styles.heading}>
+            <MapFilter />
+            {/* <div className={styles.heading}>
                 <h2>Arama Sonuçları :</h2>
                 <b>30 Bayi</b>
-            </div>
-            <List pagination={false}>
-                <List.Body rows={data} />
+            </div> */}
+            <List pagination={false} _pathname="/map">
+                <List.Body rows={bayilerData} />
             </List>
         </div>
     )
 };
 
-export default Sidebar;
+export default MapSidebar;

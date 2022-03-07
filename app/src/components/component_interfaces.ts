@@ -1,10 +1,9 @@
 export interface SelectBoxProps {
     options : any[];
+    defaultOptions : any[];
+    onChange : (values : any) => any
 };
 
-export interface SideBarProps<P, T> {
-    pingsData : P[];
-    townsData : T[];
+export interface SidebarProps<P, T> {
+    bayilerData : P;
 };
-
-export interface MapFilterProps<T> extends SideBarProps<any, T> {};
