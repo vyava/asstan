@@ -333,8 +333,7 @@ export async function updateBayiler(bayiler: any[]) {
  * **/
 export async function getBayiler(req: Request, res: Response, next: NextFunction) {
   // destructure page and limit and set default values
-  const { page = 1, limit = 40, cities = [], towns = [] }: any = req.body;
-  console.log(page, limit, cities, towns)
+  const { page = 0, limit = 40, cities = [], towns = [] }: any = req.body;
   //@ts-ignore
   let user: IUser = req.user;
 
@@ -343,13 +342,8 @@ export async function getBayiler(req: Request, res: Response, next: NextFunction
     // const data = await BayiModel.findWithCoords(user.distributor, page, limit);
     const data = await BayiModel.findAllBayis(user.distributor, page, limit, {cities, towns});
 
-    const count: any = data.length > 0 ? (await BayiModel.count()) : 0;
 
-    res.json({
-      data: data,
-      totalPages: Math.ceil(count / limit),
-      currentPage: page
-    });
+    res.json(data);
     
   } catch (error) {
     next(error)

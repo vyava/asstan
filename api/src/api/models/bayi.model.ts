@@ -1,9 +1,11 @@
 import { Model, Document, Schema, model, Types } from "mongoose";
+const mongoosePaginate = require('mongoose-paginate-v2');
 // const bcrypt = require('bcryptjs');
 // const moment = require('moment-timezone');
 // const uuidv4 = require('uuid/v4');
 // const APIError = require('../utils/APIError');
 import { IBayiDocument, IBayi } from '../interface';
+import { myCustomLabels } from "./customLabels";
 
 
 /**
@@ -12,16 +14,25 @@ import { IBayiDocument, IBayi } from '../interface';
 const roles = ['user', 'admin'];
 
 interface BayiStatic {
-  findAllBayis(distributor : any, page : number, limit : number, {cities, towns} : any): Promise<IBayiDocument[]>;
+  findAllBayis(distributor : any, page, limit, {cities, towns} : any): Promise<IBayiDocument[]>;
   findBayilerBySehir(sehir: string): Promise<IBayiDocument[]>;
   findBayilerByUpdatedAt(start: any): Promise<IBayiDocument[]>;
   newBayi(bayi: IBayi): Promise<IBayiDocument>;
   findWithCoords(distributor: any, page, limit): Promise<IBayiDocument[]>;
 };
 
+// const getPagination = (page, size) => {
+//   const limit = size ? +size : 3;
+//   const offset = page ? page * limit : 0;
+//   return { limit, offset };
+// };
+
 class BayiStatic {
-  static findAllBayis(distributor, page, limit, { cities, towns }) {
-    return Bayi.find({
+  static findAllBayis(distributor, page = 1, limit = 40, { cities, towns }) {
+    
+    // const { limit, offset } = getPagination(_page, _limit);
+
+    return Bayi.paginate({
       distributor: {
         $in: [distributor]
       },
@@ -37,9 +48,10 @@ class BayiStatic {
           }
         }
       ]
-    })
-    .limit(limit * 1)
-    .skip((page - 1) * limit);
+    }, {
+      page, limit,
+      customLabels : myCustomLabels
+    });
   };
   static async findBayilerBySehir(sehir: string) {
     return Bayi.find({ il: sehir }).limit(20);
@@ -138,6 +150,8 @@ const schema = new Schema<IBayiDocument>(
     // }
   }
 );
+
+schema.plugin(mongoosePaginate);
 
 schema.loadClass(BayiStatic);
 schema.loadClass(BayiClass);
