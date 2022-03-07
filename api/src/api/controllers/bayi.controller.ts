@@ -333,8 +333,8 @@ export async function updateBayiler(bayiler: any[]) {
  * **/
 export async function getBayiler(req: Request, res: Response, next: NextFunction) {
   // destructure page and limit and set default values
-  const { page = 1, limit = 40, cities = [], towns = [] }: any = req.query;
-  console.log(page, limit)
+  const { page = 1, limit = 40, cities = [], towns = [] }: any = req.body;
+  console.log(page, limit, cities, towns)
   //@ts-ignore
   let user: IUser = req.user;
 

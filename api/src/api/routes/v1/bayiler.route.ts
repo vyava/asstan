@@ -15,7 +15,7 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(passport.authenticate("cookie", {session: false}), controller.getBayiler);
+  .post(passport.authenticate("cookie", {session: false}), controller.getBayiler);
 
 router
   .route('/')
