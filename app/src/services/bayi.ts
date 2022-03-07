@@ -2,11 +2,11 @@ import FileSaver from "file-saver";
 import { ENDPOINTS } from "src/utils/endpoints";
 import {http} from "src/services/API";
 import { IBayi } from "src/interfaces/bayi.interface";
+import { PaginatorType } from "src/interfaces/pagination.interface";
 
 interface DefaultReponse<T=unknown> {
     data: T;
-    totalPages: number;
-    currentPage: number
+    paginator : PaginatorType;
 };
 
 class BayiService {

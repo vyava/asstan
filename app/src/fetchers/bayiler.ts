@@ -14,15 +14,3 @@ export const bayiDownloadFetcher = async ({ queryKey }: any) => {
     const [key, query] = queryKey;
     return BayiService.downloadBayiler(query);
 };
-
-export const useBayiler = () : UseQueryResult<IBayi[], AxiosError> => {
-    const { isStale, setIsStale, filters } = useContext(mapContext);
-
-    return useQuery(["bayiler", filters], bayiFetcher, {
-        initialData: null,
-        refetchOnWindowFocus: false,
-        select: res => res?.data,
-        enabled : !isStale,
-        onSettled : () => setIsStale(true)
-    });
-}

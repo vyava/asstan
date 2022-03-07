@@ -1,7 +1,11 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDistricts } from "src/fetchers/districts";
-import { IDistrictUser } from "src/interfaces/district.interface";
+import { bayiFetcher } from "src/fetchers/bayiler";
+import { useQuery, UseQueryResult } from "react-query";
+import { IBayi } from "src/interfaces/bayi.interface";
+import { AxiosError } from "axios";
+import { PaginatorType } from "src/interfaces/pagination.interface";
 
 const defaultIsStale = false;
 // User Districts
@@ -16,6 +20,9 @@ export type MapContextType = {
 
     setIsStale : (value : boolean) => void;
     setFilters : (value : any[]) => void;
+
+    useBayiler : () => UseQueryResult<IBayi[], AxiosError>;
+    usePagination : () => UseQueryResult<PaginatorType>;
 };
 
 type FiltersType = {
@@ -30,7 +37,7 @@ const mapContext = createContext({} as MapContextType);
 const MapContextProvider = ({ children }: any) => {
 
     const setupDistricts = (districts) => {
-        return districts.reduce((result, current, i, array) => {
+        return districts?.reduce((result, current, i, array) => {
             result["cities"].push(current.city);
             result["towns"] = result["towns"].concat(current.districts.map(d => d.name));
             return result;
@@ -38,7 +45,7 @@ const MapContextProvider = ({ children }: any) => {
     };
 
     const groupDistricts = (districts) => {
-        return districts.map((district, i) => ({
+        return districts?.map((district, i) => ({
             id: i,
             label: district.city,
             value : district.city,
@@ -51,16 +58,27 @@ const MapContextProvider = ({ children }: any) => {
     };
     
     const router = useRouter();
-    const { page = 1, limit = 40 } : any = router.query;
+    const { page = "1", limit = 40 } : any = router.query;
 
     const groupedDistricts = groupDistricts(defaultDistricts);
-    const defaultOptions = [].concat.apply([], groupedDistricts.map(v => v.options));
+    const defaultOptions = [].concat.apply([], groupedDistricts?.map(v => v.options));
 
     const [isStale, setIsStaleState] = useState(defaultIsStale);
     
-    let {cities, towns } = setupDistricts(defaultDistricts);
+    let {cities, towns } = setupDistricts(defaultDistricts) || {cities : [], towns : []};
 
     const [filters, setFiltersState] = useState({page, limit, cities, towns} as FiltersType);
+    
+    
+
+    const setPagination = (pag) => {
+        setPaginatorState(pag);
+    }
+
+    useEffect(() => {
+        setFiltersState({...filters, page, limit});
+        setIsStale(false);
+    }, [page, limit]);
 
     const setFilters = (values : any[]) => {
         let {cities, towns } = values.reduce((result, value) => {
@@ -77,8 +95,38 @@ const MapContextProvider = ({ children }: any) => {
         setIsStaleState(value);
     };
 
+    const useBayiler = () : UseQueryResult<IBayi[], AxiosError> => {
+
+        return useQuery(["bayiler", filters], bayiFetcher, {
+            initialData: null,
+            refetchOnWindowFocus: false,
+            select: res => {
+                setPagination(res.paginator);
+                return res?.data
+            },
+            enabled : !isStale,
+            onSuccess : (values) => {
+                setIsStale(true);
+            },
+
+        });
+    };
+
+    // Pagination
+    const [paginator, setPaginatorState] = useState(null as PaginatorType);
+
+    const getPagination = () => {
+        return paginator;
+    }
+
+    const usePagination = () => {
+        return useQuery(["pagination"], getPagination, {
+            enabled : !!isStale
+        });
+    }
+
     return (
-        <mapContext.Provider value={{ isStale, setIsStale, filters, setFilters, defaultOptions, groupedDistricts }}>
+        <mapContext.Provider value={{ isStale, setIsStale, filters, setFilters, defaultOptions, groupedDistricts, useBayiler, usePagination }}>
             {children}
         </mapContext.Provider>
     )

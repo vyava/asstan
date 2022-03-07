@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/router";
 // import dynamic from "next/dynamic";
 // import * as L from 'leaflet'; // must be imported first;
@@ -21,14 +21,14 @@ import { useTowns } from "src/fetchers/towns";
 // import { applyFilter, fillPoint, groupFilters, splitPings } from "./map_helpers";
 import { useDistricts } from "src/fetchers/districts";
 import { useQuery, useQueryClient } from "react-query";
-import { bayiFetcher, useBayiler } from "src/fetchers/bayiler";
-import { MapContextProvider } from "src/contexts/map.context";
+import { mapContext } from "src/contexts/map.context";
 
 
 // const MapField = dynamic(() => import("src/components/map/search/index"), { ssr: false })
 
 const Map = () => {
     // const fetchedPings = usePings(fetchedBayiler) || [];
+    const { useBayiler } = useContext(mapContext);
 
     const { isFetching: fetchingBayiler, isError: isErrorBayiler, data: fetchedBayiler } = useBayiler();
 

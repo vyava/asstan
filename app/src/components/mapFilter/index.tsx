@@ -7,15 +7,11 @@ export const MapFilter = () => {
 
     let { setFilters, groupedDistricts, defaultOptions } = useContext(mapContext);
 
-    const handleChange = (values) => {
-        setFilters(values);
-    }
-
     return (
         <div className={styles.root}>
             <ul className={styles.filter_items}>
                 <li>
-                    <SelectBox options={groupedDistricts} defaultOptions={defaultOptions} onChange={handleChange} />
+                    <SelectBox options={groupedDistricts} defaultOptions={defaultOptions} onChange={setFilters} />
                 </li>
             </ul>
         </div>

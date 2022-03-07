@@ -9,7 +9,6 @@ import { IBayi } from "src/interfaces/bayi.interface";
 import Icon from "src/utils/icon";
 
 import cls from "classnames";
-import { Pagination } from "../pagination";
 
 export interface IHeaders {
   [key: string]: string;
@@ -109,61 +108,24 @@ const Body = ({ rows }: { rows: IBayi[] }) => {
             </li>
           ))}
 
-          {rows.length == 0 && <p>Bayi bulunamadı</p>}
+          {rows?.length == 0 && <p>Bayi bulunamadı</p>}
       </ul>
     </>
   );
 };
 
-interface ListPaginationProps {
-  limit?: number;
-  itemPerPage?: number;
-  pathname? : string;
-}
-
-const ListPagination = ({ limit, itemPerPage, pathname }: ListPaginationProps) => {
-
-  const router = useRouter();
-
-  // @ts-ignore
-  const page: number = parseInt(router.query.page) || 0;
-
-  const { hasPagination } = useContext(listContext) as ListContextType;
-
-  const paginationConfig = {
-    _pathname : pathname
-  }
-
-  return (
-    <>
-      {
-        hasPagination &&
-        <Pagination config={paginationConfig}>
-          <Pagination.First number={1} pathname={pathname}></Pagination.First>
-
-          <Pagination.Items lmt={10} count={page} />
-
-          <Pagination.Last number={10} pathname={pathname}></Pagination.Last>
-        </Pagination>
-      }
-    </>
-  );
-};
-
-interface ListProps extends ListPaginationProps {
-  pagination?: boolean;
+interface ListProps {
   children: ReactNode[] | ReactNode;
   _pathname : string;
 }
 
-const List = ({ children, pagination, _pathname }: ListProps) => {
+const List = ({ children, _pathname }: ListProps) => {
   return (
     <ListContextProvider>
       <div className={styles.root}>
         <div className={cls(styles.container)}>
           <section className={styles.list}>{children}</section>
         </div>
-        {pagination && <ListPagination limit={100} itemPerPage={10} pathname={_pathname} />}
       </div>
     </ListContextProvider>
   );
