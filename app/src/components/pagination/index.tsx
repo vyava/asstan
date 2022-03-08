@@ -4,6 +4,7 @@ import Icon from "src/utils/icon";
 import CustomLink from "src/components/Link";
 import { PaginationContextProvider, paginationContext } from "./context";
 import React, { useContext } from "react";
+import { PaginatorType } from "src/interfaces/pagination.interface";
 
 interface PaginationProps {
     config? : {
@@ -33,22 +34,72 @@ const Item = ({ number, classname, children }: ItemProps) => {
             }
         }
     }> {children} </CustomLink>
+};
+
+function getPager(totalItems, currentPage, pageSize) {
+    // default to first page
+    currentPage = currentPage || 1;
+
+    // default page size is 10
+    pageSize = pageSize || 10;
+
+    // calculate total pages
+    var totalPages = Math.ceil(totalItems / pageSize);
+
+    var startPage, endPage;
+    if (totalPages <= 10) {
+        // less than 10 total pages so show all
+        startPage = 1;
+        endPage = totalPages;
+    } else {
+        // more than 10 total pages so calculate start and end pages
+        if (currentPage <= 6) {
+            startPage = 1;
+            endPage = 10;
+        } else if (currentPage + 4 >= totalPages) {
+            startPage = totalPages - 9;
+            endPage = totalPages;
+        } else {
+            startPage = currentPage - 5;
+            endPage = currentPage + 4;
+        }
+    }
+
+    // calculate start and end item indexes
+    var startIndex = (currentPage - 1) * pageSize;
+    var endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
+
+    // create an array of pages to ng-repeat in the pager control
+    var pages = [...Array((endPage + 1) - startPage).keys()].map(i => startPage + i);
+
+    // return object with all pager properties required by the view
+    return {
+        totalItems: totalItems,
+        currentPage: currentPage,
+        pageSize: pageSize,
+        totalPages: totalPages,
+        startPage: startPage,
+        endPage: endPage,
+        startIndex: startIndex,
+        endIndex: endIndex,
+        pages: pages
+    };
 }
 
-const Items = ({totalPage} : ItemsProps) => {
+const Items = ({totalItems, currentPage, pageSize} : Partial<PaginatorType>) => {
     let { pathname } = useContext(paginationContext);
-
+    let { pages, ...rest } = getPager(totalItems, currentPage, pageSize);
     return (
         <>
             {
-                Array.from({length : totalPage}).map((page, i) => {
+                pages.map((page, i) => {
                     return (
                         <CustomLink key={i} to={
                             {
                                 pathname: pathname,
-                                query: { page : i+1 }
+                                query: { page : page }
                             }
-                        }> {i+1} </CustomLink>
+                        }> {page} </CustomLink>
                     )
                 })
             }
