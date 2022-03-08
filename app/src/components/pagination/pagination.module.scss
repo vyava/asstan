@@ -1,7 +1,17 @@
+.position {
+    @apply
+    absolute
+    right-0
+    bottom-0;
+}
 .pagination {
     @apply
     flex
-    fixed
+    sticky
+    h-12
+    box-border
+    left-0
+    right-0
     bottom-0
     py-2 px-1
     bg-white
@@ -14,20 +24,24 @@
     
     a {
         @apply
+        flex
+        items-center
         py-0.5 px-3
             text-xs
             rounded
             bg-primary-700
             text-center
             text-primary-500
-            hidden
-            sm:block
             hover:text-white
-            hover:bg-primary-500
-            leading-6;
-            
-    };
+            hover:bg-primary-500;
+    }
     
+}
+
+a.active_link {
+    @apply
+    text-white
+    bg-primary-500
 }
 
 a.pagination_arrow {

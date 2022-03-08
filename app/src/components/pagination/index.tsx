@@ -94,7 +94,7 @@ const Items = ({totalItems, currentPage, pageSize} : Partial<PaginatorType>) => 
             {
                 pages.map((page, i) => {
                     return (
-                        <CustomLink key={i} to={
+                        <CustomLink className={cls({[styles.active_link] : page == currentPage})} key={i} to={
                             {
                                 pathname: pathname,
                                 query: { page : page }
@@ -110,9 +110,11 @@ const Items = ({totalItems, currentPage, pageSize} : Partial<PaginatorType>) => 
 export const Pagination = ({ children, config }: PaginationProps) => {
     return (
         <PaginationContextProvider config={config}>
-            <div className={cls(styles.pagination, "")}>
-                {children}
-            </div>
+            {/* <div className={cls(styles.position, "")}> */}
+                <div className={cls(styles.pagination, "")}>
+                    {children}
+                </div>
+            {/* </div> */}
         </PaginationContextProvider>
     )
 };
