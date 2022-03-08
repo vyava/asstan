@@ -3,6 +3,10 @@
 }
 
 .as_icon {
-    display: inline-block;
+    width: 20px;
+
+    @apply
+    leading-7
+    inline-block;
 }
 
