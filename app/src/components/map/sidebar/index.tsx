@@ -29,12 +29,8 @@ const MapSidebar = ({ bayilerData }: SidebarProps<IBayi[], IDistrictUser[]>) => 
             </List>
             <Pagination config={{_pathname : "/map"}}>
                 <Pagination.First number={1} />
-                <Pagination.Prev number={paginator?.prev} />
-
-                <Pagination.Items totalPage={paginator?.totalPages} />
-
-                <Pagination.Next number={paginator?.next} />
-                <Pagination.Last number={paginator?.pageSize} />
+                <Pagination.Items totalItems={paginator?.totalItems} currentPage={paginator?.currentPage} pageSize={paginator?.pageSize}/>
+                <Pagination.Last number={paginator?.totalPages} />
             </Pagination>
         </div>
     )
