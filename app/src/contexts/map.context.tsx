@@ -101,7 +101,7 @@ const MapContextProvider = ({ children }: any) => {
             initialData: null,
             refetchOnWindowFocus: false,
             select: res => {
-                setPagination(res.paginator);
+                setPagination(res?.paginator);
                 return res?.data
             },
             enabled : !isStale,
