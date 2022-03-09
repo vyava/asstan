@@ -132,7 +132,7 @@ Pagination.First = ({ number }: Partial<ItemProps>) => {
 Pagination.Prev = ({ number }: Partial<ItemProps>) => {
     let { pathname } = useContext(paginationContext);
     return (
-        <Item number={number} pathname={pathname} classname="back">
+        <Item number={number || 1} pathname={pathname} classname="back">
             <Icon name="long-arrow-alt-left" />
         </Item>
     );
