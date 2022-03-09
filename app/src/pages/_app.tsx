@@ -18,6 +18,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 
 import ProgressBar from "src/components/progressbar";
 import TıtleManager from "src/components/title-manager";
+import { MapContextProvider } from "src/contexts/map.context";
 
 // if (process.env.NODE_ENV === "development") {
 //   require("../__mocks__");
@@ -43,16 +44,18 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
-          <ProgressBar />
-          <TıtleManager />
+          <MapContextProvider>
+            <ProgressBar />
+            <TıtleManager />
 
-          <Head>
-            <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-          </Head>
+            <Head>
+              <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+            </Head>
 
-          <div className="container-fluid h-full flex w-full">
-            <Component {...pageProps} />
-          </div>
+            <div className="container-fluid h-full flex w-full">
+              <Component {...pageProps} />
+            </div>
+          </MapContextProvider>
           <ReactQueryDevtools initialIsOpen={false} />
         </Hydrate>
       </QueryClientProvider>

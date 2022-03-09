@@ -1,44 +1,33 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { bayiFetcher } from "src/fetchers/bayiler";
-import { useQuery, useQueryClient } from "react-query";
+import { useContext } from "react";
 
 import List from "src/components/list";
 import MainLayout from "src/layouts/Main";
 
 import { BAYILER_LIST_HEADERS } from "src/utils/common";
+import { mapContext } from "src/contexts/map.context";
+import { Pagination } from "src/components/pagination";
 
 const BayilerPage = () => {
-  const router = useRouter();
 
-  const { page, limit} = router.query;
+  const { useBayiler, usePagination } = useContext(mapContext);
 
-  const { isLoading, error, data, isSuccess } = useQuery(["bayilerJson", { page, limit }], bayiFetcher, {
-    initialData: {data : [], currentPage : 0, totalPages : 0},
-    select: res => res.data
-  });
-
-  const queryClient = useQueryClient();
-
-  useEffect(() => {
-    queryClient.invalidateQueries('bayilerJson');
-  }, [page])
+  const { data } = useBayiler();
+  const {data : paginator} = usePagination();
 
   return (
     <MainLayout title="Bayiler">
-      {error ? (
-        <h1>
-          Hata oluştu <br /> {JSON.stringify(error)}
-        </h1>
-      ) : isLoading ? <h1>Yükleniyor..</h1> : (
-        (isSuccess && data) ? (
-          <List pagination={true} _pathname="/bayiler">
+          <List _pathname="/bayiler">
             <List.Header headers={BAYILER_LIST_HEADERS} />
 
             <List.Body rows={data} />
           </List>
-        ) : <h1>Yükleniyor</h1>
-      )}
+          <Pagination config={{_pathname : "/bayiler"}}>
+              <Pagination.First number={1} />
+              <Pagination.Prev number={paginator?.prev} />
+              <Pagination.Items totalItems={paginator?.totalItems} currentPage={paginator?.currentPage} pageSize={paginator?.pageSize}/>
+              <Pagination.Next number={paginator?.next} />
+              <Pagination.Last number={paginator?.totalPages} />
+          </Pagination>
     </MainLayout>
   );
 };
