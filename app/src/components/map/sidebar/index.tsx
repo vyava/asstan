@@ -21,8 +21,7 @@ const MapSidebar = ({ bayilerData }: SidebarProps<IBayi[], IDistrictUser[]>) => 
         <div className={styles.root}>
             <MapFilter />
             <div className={styles.heading}>
-                <h2>Arama Sonuçları :</h2>
-                <b>{paginator?.totalItems} Bayi</b>
+                <h2>{paginator?.totalItems} sonuç </h2>
             </div>
             <List _pathname="/map">
                 <List.Body rows={bayilerData} />
