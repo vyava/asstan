@@ -19,3 +19,5 @@ export const BAYILER_LIST_HEADERS = {
     adres: "Adres",
     vergiNo: "Vergi No"
 };
+
+export const uniqueArray = a => [...new Set(a.map(o => JSON.stringify(o)))].map((s : any) => JSON.parse(s))

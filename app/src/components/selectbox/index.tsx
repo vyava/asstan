@@ -1,13 +1,9 @@
 import { useState } from "react";
 import styles from "./select_box.module.scss";
-import Select, { components, GroupProps } from 'react-select';
+import Select, { components, GroupHeadingProps, GroupProps } from 'react-select';
 import cls from "classnames";
 import { SelectBoxProps } from "src/components/component_interfaces";
-
-const groupStyles = {
-    border: `1px dotted black`,
-    borderRadius: '5px',
-};
+import { uniqueArray } from "src/utils/common";
 
 export const SelectBox = ({ options = [], defaultOptions, onChange }: SelectBoxProps) => {
 
@@ -22,12 +18,12 @@ export const SelectBox = ({ options = [], defaultOptions, onChange }: SelectBoxP
         control: (provided) => ({
             ...provided,
             // none of react-select's styles are passed to <Control />
-            fontSize: '14px',
+            fontSize: '13px',
             minWidth: "100%",
-            height: '100px',
-              border: '2px solid #040849',
-            alignItems: 'flex-start'
-
+            height: 'auto',
+            border: '2px solid #040849',
+            alignItems: 'flex-start',
+            padding : '3px'
         })
     };
 
@@ -41,6 +37,25 @@ export const SelectBox = ({ options = [], defaultOptions, onChange }: SelectBoxP
         setSelectedOption(selectedOption);
         onChange(selectedOption);
     };
+    
+    const GroupHeading = (props: GroupHeadingProps<any | any>) => {
+        // console.log(props)
+
+        const groupClicked = (props) => {
+            let { options } = props.data;
+            if(options){
+                let uniqueOptions = uniqueArray([...selectedOption, ...options]);
+                setSelectedOption(uniqueOptions);
+                onChange(uniqueOptions);
+            }
+        }
+        
+        return (
+            <div onClick={() => groupClicked(props)}>
+                <components.GroupHeading {...props} />
+            </div>
+        )
+    }
 
     return (
         <div className={styles.root}>
@@ -48,6 +63,7 @@ export const SelectBox = ({ options = [], defaultOptions, onChange }: SelectBoxP
                 value={selectedOption}
                 closeMenuOnSelect={false}
                 options={options}
+                components={{GroupHeading}}
                 onChange={(values) => handleChange(values)}
                 noOptionsMessage={() => <div>Bulunamadı</div>}
                 isMulti
