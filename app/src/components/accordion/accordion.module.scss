@@ -1,0 +1,29 @@
+.item {
+    @apply
+    relative
+    flex
+    flex-col;
+}
+
+.header {
+    @apply
+    p-2
+}
+
+.content {
+    @apply
+    block
+}
+
+.overlay {
+    @apply
+    hidden;
+};
+
+.overlay_active {
+    backdrop-filter: blur(1.5px);
+    @apply
+    absolute
+    w-full
+    h-full;
+}
