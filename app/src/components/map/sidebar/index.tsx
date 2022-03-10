@@ -11,6 +11,7 @@ import { useDistricts } from "src/fetchers/districts";
 import { useContext, useEffect } from "react";
 import { mapContext } from "src/contexts/map.context";
 import { Pagination } from "src/components/pagination";
+import Accordion from "src/components/accordion";
 
 const MapSidebar = ({ bayilerData }: SidebarProps<IBayi[], IDistrictUser[]>) => {
     const { usePagination } = useContext(mapContext);
@@ -19,7 +20,9 @@ const MapSidebar = ({ bayilerData }: SidebarProps<IBayi[], IDistrictUser[]>) => 
 
     return (
         <div className={styles.root}>
-            <MapFilter />
+            <Accordion>
+                <MapFilter />
+            </Accordion>
             <div className={styles.heading}>
                 <h2>{paginator?.totalItems} sonuç </h2>
             </div>
