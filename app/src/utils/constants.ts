@@ -170,7 +170,7 @@ const CritterStrings = {
     bing: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
     govBase: 'https://maps.gov.bc.ca/arcgis/rest/services/province/roads_wm/MapServer/tile/{z}/{y}/{x}',
     esriWorldTopo: 'https://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
-    open  : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    open  : 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
     waterColor : 'http://c.tile.stamen.com/watercolor/${z}/${x}/${y}.jpg',
     traceStrack : 'https://tile.tracestrack.com/base/{z}/{x}/{y}.png'
   }

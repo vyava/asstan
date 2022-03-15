@@ -12,21 +12,21 @@ const bcgw_url = 'http://openmaps.gov.bc.ca/geo/pub/ows';
 
 export const initMap = (
     mapRef: MutableRefObject<L.Map>,
-    // drawnItems: L.FeatureGroup,
+    drawnItems: L.FeatureGroup,
     selectedPings: L.GeoJSON<IBayiPoint[]>,
     // drawSelectedLayer: () => void,
     // handleDrawLine: (l: any) => void,
     // handleDeleteLine: () => void,
 ): void => {
-    // mapRef.current = L.map('map', { zoomControl: true }).setView([41.015137, 28.979530], 4);
-    mapRef = useRef<L.Map>(null) as MutableRefObject<L.Map>;
+    mapRef.current = L.map('map', { zoomControl: false }).setView([41.015137, 28.979530], 5);
+    // mapRef = useRef<L.Map>(null) as MutableRefObject<L.Map>;
 
 
     // @ts-ignore
     const layerPicker = L.control.layers(null, null, { position: 'topleft' });
-    L.drawLocal.draw.toolbar.buttons.polyline = MapStrings.drawLineLabel;
-    L.drawLocal.draw.toolbar.buttons.polygon = MapStrings.drawPolygonLabel;
-    L.drawLocal.draw.toolbar.buttons.rectangle = MapStrings.drawRectangleLabel;
+    // L.drawLocal.draw.toolbar.buttons.polyline = MapStrings.drawLineLabel;
+    // L.drawLocal.draw.toolbar.buttons.polygon = MapStrings.drawPolygonLabel;
+    // L.drawLocal.draw.toolbar.buttons.rectangle = MapStrings.drawRectangleLabel;
 
     // const drawControl = new L.Control.Draw({
     //     position: 'topright',
@@ -43,7 +43,7 @@ export const initMap = (
 
     // mapRef.current.addControl(drawControl);
     // mapRef.current.addLayer(drawnItems);
-    mapRef.current.addLayer(selectedPings);
+    // mapRef.current.addLayer(selectedPings);
 
     addTileLayers(mapRef, layerPicker);
 };
@@ -75,8 +75,8 @@ const addTileLayers = (mapRef: React.MutableRefObject<L.Map>, layerPicker: L.Con
     
 
     // overlays from BCGW
-    layerPicker.addOverlay(getCHB(), 'Caribou Herd Boundaries');
-    layerPicker.addOverlay(getPPA(), 'Parks & Protected Areas');
+    // layerPicker.addOverlay(getCHB(), 'Caribou Herd Boundaries');
+    // layerPicker.addOverlay(getPPA(), 'Parks & Protected Areas');
 };
 
 // caribou herd boundaries
