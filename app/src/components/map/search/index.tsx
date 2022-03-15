@@ -1,10 +1,14 @@
 import { useState, useEffect, useRef, MutableRefObject } from "react";
 import * as L from 'leaflet'; // must be imported first;
+import 'leaflet-draw';
+import 'leaflet-draw/dist/leaflet.draw.css';
+import 'leaflet/dist/leaflet.css';
 import styles from "./search.module.scss";
 import { initMap } from "src/components/map/map_init";
 import { IBayiPoint, MapRange, OnlySelectedCritters, OnPanelRowSelect } from "src/types/map";
 import { ITown } from "src/interfaces/town.interface";
 import { IDistrictUser } from "src/interfaces/district.interface";
+import { setupSelectedPings } from "../point_setup";
 
 export type MapSearchBaseProps = {
     // handleRowSelected: OnPanelRowSelect;
@@ -35,11 +39,18 @@ const MapSearch = ({
 }: MapSearchProps) : JSX.Element => {
     const mapRef = useRef<L.Map>(null) as MutableRefObject<L.Map>;
 
+    // store the selection shapes
+    const drawnItems = new L.FeatureGroup();
+    const drawnLines = [];
+
+    const selectedPingsLayer = new L.GeoJSON();
+    selectedPingsLayer.options = setupSelectedPings();
+
     // initialize the map
     useEffect(() => {
         const updateComponent = (): void => {
             if (!mapRef.current) {
-                // initMap(mapRef,  /* drawnItems ,*/ pings as any, /* handleDrawShape, handleDrawLine, handleDeleteLine */);
+                initMap(mapRef,  drawnItems, selectedPingsLayer/* handleDrawShape, handleDrawLine, handleDeleteLine */);
             }
             // tracksLayer.bringToBack();
         };

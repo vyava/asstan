@@ -1,4 +1,5 @@
 export interface IBayi {
+    _id? : any;
     il: string;
     ilce: string;
     sinif: string;

@@ -35,6 +35,19 @@ const MAP_COLOURS_OUTLINE = {
     mortality: '#ffaa00'
 };
 
+const bayiToPing = (bayiler : IBayi[]) : IBayiPoint[] => {
+    return bayiler.map(bayi => ({
+        type: 'Feature',
+        geometry: {
+            type : "Point",
+            coordinates : [bayi.coords?.lat, bayi.coords?.lng]
+        },
+        id: bayi._id,
+        coords : bayi.coords,
+        properties: bayi
+    }))
+}
+
 /**
  * @param data the @type {Object}
  * @returns a @type {L.Point} feature
@@ -381,5 +394,6 @@ export {
     // sortGroupedBayi,
     splitPings,
     latlngToGeoJSONObject,
-    getPositionFromCoords
+    getPositionFromCoords,
+    bayiToPing
 };
