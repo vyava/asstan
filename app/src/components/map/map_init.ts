@@ -14,7 +14,7 @@ export const initMap = (
     mapRef: MutableRefObject<L.Map>,
     drawnItems: L.FeatureGroup,
     selectedPings: L.GeoJSON<IBayiPoint[]>,
-    // drawSelectedLayer: () => void,
+    drawSelectedLayer: () => void,
     // handleDrawLine: (l: any) => void,
     // handleDeleteLine: () => void,
 ): void => {
@@ -24,28 +24,36 @@ export const initMap = (
 
     // @ts-ignore
     const layerPicker = L.control.layers(null, null, { position: 'topleft' });
-    // L.drawLocal.draw.toolbar.buttons.polyline = MapStrings.drawLineLabel;
-    // L.drawLocal.draw.toolbar.buttons.polygon = MapStrings.drawPolygonLabel;
-    // L.drawLocal.draw.toolbar.buttons.rectangle = MapStrings.drawRectangleLabel;
-
-    // const drawControl = new L.Control.Draw({
-    //     position: 'topright',
-    //     draw: {
-    //         marker: false,
-    //         circle: false,
-    //         circlemarker: false
-    //     },
-    //     edit: {
-    //         featureGroup: drawnItems
-    //     },
-    // });
-
-
-    // mapRef.current.addControl(drawControl);
-    // mapRef.current.addLayer(drawnItems);
-    // mapRef.current.addLayer(selectedPings);
+    mapRef.current.addLayer(drawnItems);
+    mapRef.current.addLayer(selectedPings);
 
     addTileLayers(mapRef, layerPicker);
+    drawSelectedLayer();
+
+    mapRef.current.on("click", (e) => {
+        console.log(e)
+    })
+
+    selectedPings.on("baselayerchange", (e) => {
+        console.log("layer tıklandı")
+    })
+};
+
+// setup for normal pings for assigned devices
+// when a ping is clicked/unselected, only the point style is changed
+const setupPingOptions = (pings: L.GeoJSON, clickHandler: L.LeafletEventHandlerFn): void => {
+    pings.options = {
+        pointToLayer: (feature: any, latlng: L.LatLngExpression): L.Layer => {
+            const marker = L.circleMarker(latlng);
+
+            marker.on('click', (e) => {
+                //   e.target.setStyle(selectedPointStyle());
+                clickHandler(e);
+            });
+            marker.on('click', clickHandler);
+            return marker;
+        }
+    };
 };
 
 const addTileLayers = (mapRef: React.MutableRefObject<L.Map>, layerPicker: L.Control.Layers): void => {
@@ -64,7 +72,7 @@ const addTileLayers = (mapRef: React.MutableRefObject<L.Map>, layerPicker: L.Con
     // });
 
     const openTile = L.tileLayer(MapTileLayers.open, {
-        maxZoom : 19,
+        maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mapRef.current)
 
@@ -72,7 +80,7 @@ const addTileLayers = (mapRef: React.MutableRefObject<L.Map>, layerPicker: L.Con
     // layerPicker.addBaseLayer(bcGovBaseLayer, 'BC Government');
     // layerPicker.addBaseLayer(esriWorldTopo, 'ESRI World Topo');
     layerPicker.addBaseLayer(openTile, 'Openstreet');
-    
+
 
     // overlays from BCGW
     // layerPicker.addOverlay(getCHB(), 'Caribou Herd Boundaries');
@@ -148,7 +156,7 @@ const getTCL = () => {
 };
 
 const hidePopup = (): void => {
-    const doc : any = document.getElementById('popup');
+    const doc: any = document.getElementById('popup');
     doc.innerHTML = '';
     doc.classList.remove('appear-above-map');
 };
