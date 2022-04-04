@@ -6,7 +6,7 @@ import styles from "./sidebar.module.scss";
 import { SidebarProps } from "src/components/component_interfaces";
 import { IBayiPoint, ITownLine } from "src/types/map";
 import { IBayi } from "@shared/interfaces";
-import { IDistrictUser } from "src/interfaces/district.interface";
+import { IDistrictUser } from "@shared/interfaces";
 import { useDistricts } from "src/fetchers/districts";
 import { useContext, useEffect } from "react";
 import { mapContext } from "src/contexts/map.context";

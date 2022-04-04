@@ -1,4 +1,4 @@
-import { IDistrictUser } from "src/interfaces/district.interface";
+import { IDistrictUser } from "@shared/interfaces";
 
 const ISSERVER = typeof window === "undefined";
 
