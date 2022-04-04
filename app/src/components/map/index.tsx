@@ -29,9 +29,8 @@ const Map = () => {
 
     const { isFetching: fetchingBayiler, isFetched, isError: isErrorBayiler, data: fetchedBayiler } = useBayiler();
     let pings = [];
-    if(isFetched){
-
-    pings = bayiToPing(fetchedBayiler);
+    if (isFetched) {
+        pings = bayiToPing(fetchedBayiler);
     }
 
 
@@ -161,7 +160,7 @@ const Map = () => {
 
     return (
         <div className={styles.root}>
-            <MapField pings={pings} />
+            <MapField _pings={pings} />
             <MapSidebar bayilerData={fetchedBayiler} />
         </div>
     );

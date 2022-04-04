@@ -3,12 +3,13 @@ import * as L from 'leaflet'; // must be imported first;
 import 'leaflet-draw';
 import 'leaflet-draw/dist/leaflet.draw.css';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-defaulticon-compatibility';
 import styles from "./search.module.scss";
 import { initMap } from "src/components/map/map_init";
 import { IBayiPoint, MapRange, OnlySelectedCritters, OnPanelRowSelect } from "src/types/map";
 import { ITown } from "src/interfaces/town.interface";
 import { IDistrictUser } from "src/interfaces/district.interface";
-import { setupSelectedPings } from "../point_setup";
+import { highlightLatestPings, setupSelectedPings } from "../point_setup";
 
 export type MapSearchBaseProps = {
     // handleRowSelected: OnPanelRowSelect;
@@ -16,8 +17,8 @@ export type MapSearchBaseProps = {
 };
 
 export type MapSearchProps = MapSearchBaseProps & {
-    pings: IBayiPoint[];
-    towns? :  IDistrictUser[]// ITown;
+    _pings: IBayiPoint[];
+    towns?: IDistrictUser[]// ITown;
     unassignedPings?: IBayiPoint[];
     // Bayi IDs of points that have a device/animal attached
     // selectedAssignedIDs?: number[];
@@ -28,7 +29,7 @@ export type MapSearchProps = MapSearchBaseProps & {
 };
 
 const MapSearch = ({
-    pings,
+    _pings,
     // unassignedPings,
     // selectedAssignedIDs,
     // handleShowOverview,
@@ -36,93 +37,76 @@ const MapSearch = ({
     // handleRowSelected,
     // setShowExportModal,
     // range
-}: MapSearchProps) : JSX.Element => {
+}: MapSearchProps): JSX.Element => {
     const mapRef = useRef<L.Map>(null) as MutableRefObject<L.Map>;
 
     // store the selection shapes
     const drawnItems = new L.FeatureGroup();
-    const drawnLines = [];
 
     const selectedPingsLayer = new L.GeoJSON();
-    selectedPingsLayer.options = setupSelectedPings();
+    // selectedPingsLayer.options = setupSelectedPings();
+
+    useEffect(() => {
+        let features = _pings.reduce((total, ping) => {
+            if (!!ping.coords) {
+                total.push({
+                    "type": "Feature",
+                    "properties": ping.properties,
+                    "geometry": {
+                        "type": "Point",
+                        // @ts-ignore
+                        "coordinates": [parseFloat(ping.coords.lng), parseFloat(ping.coords.lat)]
+                    }
+                });
+            };
+            return total;
+        }, [])
+
+        // let features = _pings.map(ping => {
+        //     if(ping.coords !== undefined) {
+        //         return {
+        //             "type" : "Feature",
+        //             "properties" : ping.properties,
+        //             "geometry" : {
+        //                 "type" : "Point",
+        //                 // @ts-ignore
+        //                 "coordinates" : [parseFloat(ping.coords.lat), parseFloat(ping.coords.lng)]
+        //             }
+        //         }
+        //     }
+        // });
+
+        let featureCollection: any = { type: "FeatureCollection", features }
+        // console.log(featureCollection);
+
+        selectedPingsLayer.addData(featureCollection);
+    }, []);
+
+    useEffect(() => {
+        const ref = mapRef.current;
+        if (!ref) {
+            return;
+        };
+
+        if (selectedPingsLayer) {
+            ref.addLayer(selectedPingsLayer);
+        }
+    }, []);
+
+    const handleDrawShape = (): void => {
+        highlightLatestPings(selectedPingsLayer);
+    };
 
     // initialize the map
     useEffect(() => {
         const updateComponent = (): void => {
             if (!mapRef.current) {
-                initMap(mapRef,  drawnItems, selectedPingsLayer/* handleDrawShape, handleDrawLine, handleDeleteLine */);
+                initMap(mapRef, drawnItems, selectedPingsLayer, handleDrawShape/* handleDrawLine, handleDeleteLine */);
             }
             // tracksLayer.bringToBack();
         };
         updateComponent();
     });
-
-    // // Assing pings
-    // useEffect(() => {
-    //     const update = (): void => {
-    //         setupPingOptions(pingsLayer, handlePointClick, handlePointClose, false);
-
-    //         setPings(fetchedPings);
-    //         // @ts-ignore
-    //         applyPingsToMap(fetchedPings);
-    //     };
-
-    //     update();
-    // });
-
-    // handles the drawing and deletion of shapes, setup in map_init
-    // todo: does not handle unassigned layers yet
-    const handleDrawShape = (): void => {
-        // hidePopup();
-        // const clipper = drawnItems.toGeoJSON();
-
-        // const pings = pingsLayer.toGeoJSON();
-        // const overlay = pointsWithinPolygon(pings as any, clipper as any);
-        // const ids = [...(overlay.features.map((f) => f.id) as number[])];
-        // highlightPings(pingsLayer, ids);
-
-        // const latestPings = latestPingsLayer.toGeoJSON();
-        // const overlayLatest = pointsWithinPolygon(latestPings as any, clipper as any);
-        // const latestIds = [...(overlayLatest.features.map((f) => f.id) as number[])];
-        // highlightLatestPings(latestPingsLayer, latestIds);
-
-        // highlight these rows in bottom panel
-        // setSelectedPingIDs([...ids, ...latestIds]);
-    };
-
-    // note: using L.Layergroup isn't removing marker
-    // const handleDrawLine = (l: L.Layer): void => {
-    //     drawnLines.push(l);
-    // };
-
-
-    // const applyPingsToMap = (pings: IBayiPoint[]): void => {
-    //     if (!fetchedPings) {
-    //         return;
-    //     };
-
-    //     var century21icon = L.icon({
-    //         iconUrl: 'https://amberbrantjes.nl/wp-content/uploads/2015/10/map-marker-icon.png',
-    //         iconSize: [20, 20]
-    //     });
-
-    //     let _pings = pings.map((p: IBayiPoint) => {
-    //         L.marker([parseFloat(p.coords?.lat as any), parseFloat(p.coords?.lng as any)], {
-    //             icon: century21icon,
-    //             title: p.properties.unvan,
-    //             alt: p.properties.unvan
-    //         }).addTo(mapRef.current)
-    //     });
-    //     // selectedPingsLayer.addData(_pings);
-
-    //     // const uniqueCritterIDs = getUniqueCritterIDsFromSelectedPings(
-    //     //   p,
-    //     //   pings.map((p : any) => p.id)
-    //     // );
-
-    // };
-
-
     return (
         <div className={styles.container}>
             <div id="map" className={styles.root}></div>

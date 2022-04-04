@@ -21,6 +21,7 @@
     "formik": "^2.2.9",
     "isomorphic-unfetch": "^3.1.0",
     "leaflet": "^1.7.1",
+    "leaflet-defaulticon-compatibility": "^0.1.1",
     "leaflet-draw": "^1.0.4",
     "leaflet-labeled-circle": "^1.0.3",
     "leaflet.label": "^0.2.4",

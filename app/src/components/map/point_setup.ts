@@ -29,7 +29,12 @@ const animalColoredPointStyle = (ping: IBayiPoint, isUnassigned: boolean): L.Cir
 
 const createLatestPingIcon = (fillColour: string, color = '#000'): L.DivIcon => {
   return L.divIcon({
-    html: `<svg width="24px" height="24px" viewBox="0 0 24 24" id="star_filled" data-name="star filled" xmlns="http://www.w3.org/2000/svg"><path id="Star" d="M10,15,4.122,18.09l1.123-6.545L.489,6.91l6.572-.955L10,0l2.939,5.955,6.572.955-4.755,4.635,1.123,6.545Z" transform="translate(2 3)" stroke="${color}" fill="${fillColour}" stroke-miterlimit="10" stroke-width="1.5"/></svg>`,
+    html: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-labelledby="title"
+    aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <path data-name="layer1"
+      d="M32 2A24 24 0 0 0 8 26c0 .8 0 1.6.1 2.3v.3C10.1 47.6 32 62 32 62s21.9-14.6 23.8-33.3v-.4c.1-.8.1-1.5.1-2.3A24 24 0 0 0 32 2zm0 36a12 12 0 1 1 12-12 12 12 0 0 1-12 12z"
+      fill="#202020"></path>
+    </svg>`,
     className: 'latest-ping'
   });
 };
@@ -57,15 +62,17 @@ const setupLatestPingOptions = (pings: L.GeoJSON, clickHandler: L.LeafletEventHa
   };
 };
 
-const highlightLatestPings = (layer: L.GeoJSON, selectedIDs: number[]): void => {
+
+const highlightLatestPings = (layer: L.GeoJSON, selectedIDs?: number[]): void => {
+
   layer.eachLayer((p: any) => {
     const feature = p.feature;
     if (typeof p.setIcon === 'function') {
-      if (selectedIDs.includes(feature.id)) {
+      // if (selectedIDs.includes(feature.id)) {
         p.setIcon(latestSelectedPingIcon);
-      } else {
-        p.setIcon(createLatestPingIcon(getFillColorByStatus(feature), getOutlineColor(feature)));
-      }
+      // } else {
+      //   p.setIcon(createLatestPingIcon(getFillColorByStatus(feature), getOutlineColor(feature)));
+      // }
     }
   });
 };
