@@ -7,7 +7,7 @@ import 'leaflet-defaulticon-compatibility';
 import styles from "./search.module.scss";
 import { initMap } from "src/components/map/map_init";
 import { IBayiPoint, MapRange, OnlySelectedCritters, OnPanelRowSelect } from "src/types/map";
-import { ITown } from "src/interfaces/town.interface";
+import { ITown } from "@shared/interfaces";
 import { IDistrictUser } from "@shared/interfaces";
 import { highlightLatestPings, setupSelectedPings } from "../point_setup";
 

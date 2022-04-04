@@ -1,6 +1,6 @@
 import { ENDPOINTS } from "src/utils/endpoints";
 import { http } from "src/services/API";
-import { ITown } from "src/interfaces/town.interface";
+import { ITown } from "@shared/interfaces";
 import { ITownQuery } from "src/types/map";
 
 class TownService {
