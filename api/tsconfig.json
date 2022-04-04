@@ -7,7 +7,10 @@
     "lib": [
       "esnext.asynciterable",
       "es2020",
-  ],
+    ],
+    "paths" : {
+      "@shared" : ["../shared"]
+    }
   },
   "include": [
     "./src/**/*"
@@ -18,4 +21,5 @@
     "./node_modules/*",
     "./node_modules/@types/node/index.d.ts",
     "node_modules/typescript/lib/lib.es6.d.ts"
-  ]}
+  ]
+}

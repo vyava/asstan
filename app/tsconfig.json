@@ -20,7 +20,10 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": false,
-    "target": "esnext"
+    "target": "esnext",
+    "paths" : {
+      "@shared/*" : ["../shared/*"]
+    },
   },
   "exclude": [
     "node_modules"
