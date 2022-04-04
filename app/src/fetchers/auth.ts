@@ -1,4 +1,3 @@
-import { IUser } from "src/interfaces/user.interface";
 import AuthService from "src/services/auth";
 
 export const loginFetcher = ({ email, password }: any) => AuthService.login({ email, password });
