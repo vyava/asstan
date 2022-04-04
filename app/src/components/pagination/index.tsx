@@ -4,7 +4,7 @@ import Icon from "src/utils/icon";
 import CustomLink from "src/components/Link";
 import { PaginationContextProvider, paginationContext } from "./context";
 import React, { useContext } from "react";
-import { PaginatorType } from "src/interfaces/pagination.interface";
+import { PaginatorType } from "@shared/interfaces";
 
 interface PaginationProps {
     config? : {
