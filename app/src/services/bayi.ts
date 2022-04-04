@@ -1,7 +1,7 @@
 import FileSaver from "file-saver";
 import { ENDPOINTS } from "src/utils/endpoints";
 import {http} from "src/services/API";
-import { IBayi } from "src/interfaces/bayi.interface";
+import { IBayi } from "@shared/interfaces";
 import { PaginatorType } from "src/interfaces/pagination.interface";
 
 interface DefaultReponse<T=unknown> {

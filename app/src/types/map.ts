@@ -1,5 +1,5 @@
 import { GeoJsonObject, LineString, Point, Position, Polygon } from 'geojson';
-import { IBayi } from 'src/interfaces/bayi.interface';
+import { IBayi } from '@shared/interfaces';
 import { ITown } from 'src/interfaces/town.interface';
 
 interface MapRange {

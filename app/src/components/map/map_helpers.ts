@@ -12,7 +12,7 @@ import {
     PingGroupType,
     Coordinate,
 } from 'src/types/map';
-import { IBayi } from 'src/interfaces/bayi.interface';
+import { IBayi } from '@shared/interfaces';
 import { Position } from "geojson";
 
 const MAP_COLOURS = {

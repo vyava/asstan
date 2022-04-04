@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useQuery, UseQueryResult } from "react-query";
-import { IBayi } from "src/interfaces/bayi.interface";
+import { IBayi } from "@shared/interfaces";
 import BayiService from "src/services/bayi";
 import { mapContext } from "src/contexts/map.context";
 import { AxiosError } from "axios";

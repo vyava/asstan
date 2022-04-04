@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import { listContext, ListContextProvider, ListContextType } from "./context";
 import Link from "next/link";
 import { bayiFetcher } from "src/fetchers/bayiler";
-import { IBayi } from "src/interfaces/bayi.interface";
+import { IBayi } from "@shared/interfaces";
 import Icon from "src/utils/icon";
 
 import cls from "classnames";

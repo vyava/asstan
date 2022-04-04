@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useDistricts } from "src/fetchers/districts";
 import { bayiFetcher } from "src/fetchers/bayiler";
 import { useQuery, UseQueryResult } from "react-query";
-import { IBayi } from "src/interfaces/bayi.interface";
+import { IBayi } from "@shared/interfaces";
 import { AxiosError } from "axios";
 import { PaginatorType } from "src/interfaces/pagination.interface";
 
