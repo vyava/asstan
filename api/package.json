@@ -12,7 +12,8 @@
   },
   "scripts": {
     "start2": "ts-node --downlevelIteration src/index.ts",
-    "start": "tsc --downlevelIteration && node dist/index.js",
+    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/index.js",
+    "start3": "tsc --downlevelIteration && node dist/index.js",
     "logs2": "forever logs",
     "build-up": "nodemon src/index.ts",
     "build": "tsc --downlevelIteration",
@@ -164,7 +165,7 @@
     "ts-node": "^7.0.1",
     "ts-node-dev": "^1.0.0-pre.56",
     "tsc": "^1.20150623.0",
-    "tsconfig-paths": "^3.7.0",
+    "tsconfig-paths": "^3.14.1",
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",

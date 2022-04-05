@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "outDir": "./dist",
     "noImplicitAny": false,
     "module": "commonjs",
@@ -9,17 +10,13 @@
       "es2020",
     ],
     "paths" : {
-      "@shared" : ["../shared"]
+      "@shared/*" : ["../shared/*"]
     }
   },
   "include": [
     "./src/**/*"
   ],
   "exclude": [
-    "node_modules",
-    "./node_modules",
-    "./node_modules/*",
-    "./node_modules/@types/node/index.d.ts",
-    "node_modules/typescript/lib/lib.es6.d.ts"
+    "node_modules"
   ]
 }
