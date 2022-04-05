@@ -1,5 +1,6 @@
 import { Model, Document, Schema, model } from "mongoose";
-import { IUserDocument, IUser, INewUser } from "../interface";
+import { IUserDocument, INewUser } from "../interface";
+import { IUser } from "@shared/interfaces";
 import * as jwt from "jsonwebtoken";
 import * as bcrypt from "bcrypt";
 import { randomBytes, pbkdf2Sync } from "crypto";
@@ -130,7 +131,6 @@ const schema = new Schema<IUserDocument>({
         type: Boolean,
         default: true
     },
-    salt: String,
     hash: String,
     distributor: [{
         type: Schema.Types.ObjectId, ref: 'Dist', default: null

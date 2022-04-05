@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { IDistributor, IUser } from '../interface';
+import { IDistributor } from '../interface';
+import { IUser } from "@shared/interfaces";
 import * as mongoose from 'mongoose';
 import * as _ from 'lodash';
 import * as fs from 'fs';

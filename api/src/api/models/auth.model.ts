@@ -1,4 +1,4 @@
-import { IUser } from "../interface";
+import { IUser } from "@shared/interfaces";
 import { User } from "./user.model";
 
 export async function getUserAuthData(

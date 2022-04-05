@@ -4,7 +4,8 @@ const mongoosePaginate = require('mongoose-paginate-v2');
 // const moment = require('moment-timezone');
 // const uuidv4 = require('uuid/v4');
 // const APIError = require('../utils/APIError');
-import { IBayiDocument, IBayi } from '../interface';
+import { IBayiDocument } from '../interface';
+import { IBayi } from "@shared/interfaces";
 import { myCustomLabels } from "./customLabels";
 
 

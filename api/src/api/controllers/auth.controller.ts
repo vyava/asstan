@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { User } from '../models/user.model';
 const passport = require("passport");
 import * as jwt from "jsonwebtoken";
-import { IUser } from '../interface';
+import { IUser } from '@shared/interfaces';
 const config = require("../../config/vars");
 const APIError = require("../utils/APIError");
 import { sendOne } from "./mail.controller";

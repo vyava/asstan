@@ -6,12 +6,9 @@ import "../models/bayi.model"
 import { Distributor } from "../models/distributor.model";
 import { getDate } from "../helper/date";
 import { Bayi as BayiModel } from "../models/bayi.model";
-import * as moment from "moment";
-import * as rq from "request-promise";
-import { IUser } from '../interface';
+import { IUser } from '@shared/interfaces';
 import { createExcelFile } from '../helper/excel';
 import { ExcelSetup } from '../../config/file.vars';
-
 
 export async function newBayi(req: Request, res: Response, next: NextFunction) {
   try {

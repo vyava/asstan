@@ -10,7 +10,7 @@ export interface IUser {
     roleInMail?      : string;
     taskName?        : string;
     status?          : boolean;
-    distributor?     : [];
+    distributor?     : [any];
     password?        : string;
     hash?            : string;
     role?            : string;

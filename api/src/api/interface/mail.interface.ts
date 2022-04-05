@@ -1,5 +1,5 @@
 import { Mail, IUserMail } from "./user.interface";
-import { IBayi } from "./bayi.interface";
+import { IBayi } from "@shared/interfaces";
 
 export interface IMailPayload {
     file : any;

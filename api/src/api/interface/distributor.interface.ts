@@ -1,7 +1,7 @@
 import { Document, Types } from "mongoose";
 import { IDistrict } from "../models";
 // import { IBolge } from "./bolge.interface";
-import { IUser } from "./user.interface";
+import { IUser } from "@shared/interfaces";
 
 
 export type IDistributorDocument = Document & IDistributor;

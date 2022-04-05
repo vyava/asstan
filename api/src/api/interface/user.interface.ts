@@ -1,4 +1,5 @@
 import { Document, Types } from "mongoose";
+import { IUser } from "@shared/interfaces";
 
 
 export type IUserDocument = Document & IUser;
@@ -13,19 +14,6 @@ export interface IUserMail {
     name?           : string;
     taskName        : string;
     roleInMail      : string;
-}
-
-export interface IUser {
-    _id?             : any;
-    name?            : string;
-    email?           : Mail;
-    roleInMail?      : string;
-    taskName?        : string;
-    status?          : boolean;
-    distributor?     : [Types.ObjectId];
-    password?        : string;
-    hash?            : string;
-    salt?            : string;
 }
 
 export interface INewUser {
