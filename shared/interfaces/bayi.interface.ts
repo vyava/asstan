@@ -18,5 +18,9 @@ export interface IBayi {
   vergiNo? : string;
   createdAt?: string;
   updatedAt?: string;
-  coords? : Object;
+  coords? : {
+    lon : number;
+    lat : number;
+  };
+  geometry : number[];
 };
