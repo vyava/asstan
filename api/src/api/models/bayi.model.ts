@@ -39,6 +39,9 @@ class BayiStatic {
       },
       $and : [
         {
+          coords : {"$exists" : true}
+        },
+        {
           il : {
             $in : cities
           }
