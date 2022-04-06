@@ -6,6 +6,8 @@ import { useQuery, UseQueryResult } from "react-query";
 import { IBayi } from "@shared/interfaces";
 import { AxiosError } from "axios";
 import { PaginatorType } from "@shared/interfaces";
+import { IBayiPoint } from "src/types/map";
+import { getFeatures } from "src/components/map/map_helpers";
 
 const defaultIsStale = false;
 // User Districts
@@ -19,6 +21,7 @@ export type MapContextType = {
     setFilters: (value: any[]) => void;
 
     useBayiler: () => UseQueryResult<IBayi[], AxiosError>;
+    usePings: () => UseQueryResult<IBayiPoint[], AxiosError>;
     usePagination: () => UseQueryResult<PaginatorType>;
 };
 
@@ -104,6 +107,7 @@ const MapContextProvider = ({ children }: any) => {
         onSuccess: (result) => {
             setPagination(result?.paginator);
             setBayiler(result?.data);
+            setPings(getFeatures(result?.data))
             setIsStale(true);
         },
 
@@ -115,6 +119,12 @@ const MapContextProvider = ({ children }: any) => {
     const getBayiler = () => bayiler;
     const useBayiler = (): UseQueryResult<IBayi[], AxiosError> => useQuery(["bayiler"], getBayiler, { enabled: !!isStale });
 
+    // Pings
+    const [pings, setPingsState] = useState([] as IBayiPoint[]);
+    const setPings = (pings) => setPingsState(pings)
+    const getPings = () => pings;
+    const usePings = (): UseQueryResult<IBayiPoint[], AxiosError> => useQuery(["pings"], getPings, { enabled: !!isStale });
+
     // Pagination
     const [paginator, setPaginatorState] = useState(null as PaginatorType);
     const setPagination = (pag) => setPaginatorState(pag);
@@ -122,7 +132,7 @@ const MapContextProvider = ({ children }: any) => {
     const usePagination = () => useQuery(["pagination"], getPagination, { enabled: !!isStale });
 
     return (
-        <mapContext.Provider value={{ setIsStale, defaultOptions, groupedDistricts, useBayiler, usePagination, setFilters }}>
+        <mapContext.Provider value={{ setIsStale, defaultOptions, groupedDistricts, useBayiler, usePings, usePagination, setFilters }}>
             {children}
         </mapContext.Provider>
     )

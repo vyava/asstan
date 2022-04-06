@@ -1,5 +1,6 @@
 import * as L from "leaflet";
 import { FormStrings } from 'src/constants/strings';
+import { point, geometry, feature, featureCollection } from '@turf/turf'
 import dayjs from 'dayjs';
 import { ICodeFilter, IGroupedCodeFilter } from 'src/types/code';
 import {
@@ -35,98 +36,19 @@ const MAP_COLOURS_OUTLINE = {
     mortality: '#ffaa00'
 };
 
-const bayiToPing = (bayiler : IBayi[]) : IBayiPoint[] => {
-    return bayiler.map(bayi => ({
-        type: 'Feature',
-        geometry: {
-            type : "Point",
-            coordinates : [bayi.coords?.lat, bayi.coords?.lng]
-        },
-        id: bayi._id,
-        coords : bayi.coords,
-        properties: bayi
-    }))
+const getFeatures = (bayiler : IBayi[]) => {
+    return bayiler.filter(bayi => !!bayi.coords).map(bayi => feature(geometry("Point", bayi.geometry), bayi))
 }
 
-/**
- * @param data the @type {Object}
- * @returns a @type {L.Point} feature
- */
+const prepareFeatureCollection = (bayiler) => {
+    // console.log(bayiler)
+    // let features = getFeatures(bayiler);
+    // console.log(features)
 
-const latlngToGeoJSONObject = (data: any = {} as any, coords : any = {}) => {
-    
-    return {
-        "type": "Feature",
-        "properties": data,
-        "geometry": {
-            "type": "Point",
-            "coordinates": [parseFloat(coords?.lat), parseFloat(coords?.lng)]
-        }
-    }
+    let collection = featureCollection(bayiler);
+    return collection;
 }
 
-/**
- * @param colourString the @type {Animal} animal_colour string
- * which in the @file {map_api.ts} -> @function {getPings} is returned
- * in a concatted format of `${fill_collour},${border_colour}`
- * @returns an object with point border and fill colours
- */
-const parseAnimalColour = (colourString: string): { fillColor: string; color: string } => {
-    if (!colourString) {
-        return { fillColor: MAP_COLOURS['unassigned point'], color: MAP_COLOURS['unassigned point'] };
-    }
-    const s = colourString.split(',');
-    return { fillColor: s[0], color: s[1] };
-};
-
-/**
- * @returns the hex colour value to show as the fill colour
- */
-const getFillColorByStatus = (point: IBayiPoint, selected = false): string => {
-    if (selected) {
-        return MAP_COLOURS.selected;
-    }
-    if (!point) {
-        return MAP_COLOURS.point;
-    }
-    const { properties } = <any>point;
-    if (properties?.animal_status === 'Mortality') {
-        const { date_recorded, mortality_date } = properties;
-        // if the mortality date is not set, fill all points red
-        // otherwise only fill points red after the mortality date
-        if (!mortality_date || dayjs(date_recorded) > dayjs(mortality_date)) {
-            return MAP_COLOURS.mortality;
-        }
-    } else if (properties?.device_status === 'Potential Mortality') {
-        return MAP_COLOURS.malfunction;
-    }
-    return parseAnimalColour(properties.map_colour)?.fillColor ?? MAP_COLOURS.point;
-};
-
-// same as getFillColorByStatus - but for the point border/outline color
-const getOutlineColor = (feature: IBayiPoint | any): string => {
-    if (feature.id < 0) {
-        return MAP_COLOURS_OUTLINE['unassigned point'];
-    }
-    const colour = feature?.properties?.map_colour;
-    return colour ? parseAnimalColour(colour)?.color : MAP_COLOURS.outline;
-};
-
-/**
- * sets the @param layer {setStyle} function
- */
-const fillPoint = (layer: any, selected = false): void => {
-    // dont style tracks or invalid points
-    if (!layer.feature || layer.feature?.geometry?.type === 'LineString' || typeof layer.setStyle !== 'function') {
-        return;
-    }
-    layer.setStyle({
-        class: selected ? 'selected-ping' : '',
-        weight: 1.0,
-        color: getOutlineColor(layer.feature),
-        fillColor: getFillColorByStatus(layer.feature, selected)
-    });
-};
 
 /**
  * @param pings list of Bayi features to group
@@ -369,17 +291,14 @@ const getLast10Points = (group: IBayiGroup[]): IBayiPoint[] => {
  * @param position an object contains {lat, lng} @type {Coordinate}
  * @returns an array @type {Position}
  */
-const getPositionFromCoords = (position : Coordinate) : Position => {
-    return [position?.lat, position?.lng];
-};
+// const getPositionFromCoords = (position : Coordinate) : Position => {
+//     return [position?.lon, position?.lat];
+// };
 
 export {
     applyFilter,
-    fillPoint,
     getPointIDsFromBayiGroup,
     getEarliestPing,
-    getOutlineColor,
-    getFillColorByStatus,
     getLatestPingsFromBayiGroup,
     getLast10Fixes,
     getLast10Points,
@@ -390,10 +309,9 @@ export {
     groupFilters,
     MAP_COLOURS,
     MAP_COLOURS_OUTLINE,
-    parseAnimalColour,
     // sortGroupedBayi,
     splitPings,
-    latlngToGeoJSONObject,
-    getPositionFromCoords,
-    bayiToPing
+    // getPositionFromCoords,
+    getFeatures,
+    prepareFeatureCollection
 };
