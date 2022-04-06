@@ -1,5 +1,4 @@
 import { useEffect, useState, useContext } from "react";
-import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import styles from "./map.module.scss";
 import * as _ from "lodash";
@@ -7,32 +6,21 @@ import * as _ from "lodash";
 import MapSidebar from "./sidebar";
 
 // import { highlightLatestPings, setupLatestPingOptions, setupPingOptions, setupSelectedPings } from "src/components/map/point_setup";
-import { IBayiPoint } from "src/types/map";
-import { usePings } from "src/fetchers/pings";
-import { useTowns } from "src/fetchers/towns";
 // import { IBayi } from "src/interfaces/bayi.interface";
 // import dayjs from "dayjs";
 // import { formatDay, getToday } from "src/utils/time";
 // import { ICodeFilter } from "src/types/code";
 // import { applyFilter, fillPoint, groupFilters, splitPings } from "./map_helpers";
-import { useDistricts } from "src/fetchers/districts";
-import { useQuery, useQueryClient } from "react-query";
 import { mapContext } from "src/contexts/map.context";
-import { bayiToPing } from "./map_helpers";
 
-
-const MapField = dynamic(() => import("src/components/map/search/index"), { ssr: false })
+const MapField = dynamic(() => import("src/components/map/search/index"), { ssr: true })
 
 const Map = () => {
-    // const fetchedPings = usePings(fetchedBayiler) || [];
-    const { useBayiler } = useContext(mapContext);
 
-    const { isFetching: fetchingBayiler, isFetched, isError: isErrorBayiler, data: fetchedBayiler } = useBayiler();
-    let pings = [];
-    if (isFetched) {
-        pings = bayiToPing(fetchedBayiler);
-    }
-
+    // if (isFetched) {
+    //     console.log("re-fetched")
+    //     setPings(bayiToPing(fetchedBayiler));
+    // }
 
     // let towns = !!fetchedPings ? fetchedPings.map(ping => ({ city: ping.properties.il, town: ping.properties.ilce })) : [];
 
@@ -160,8 +148,8 @@ const Map = () => {
 
     return (
         <div className={styles.root}>
-            <MapField _pings={pings} />
-            <MapSidebar bayilerData={fetchedBayiler} />
+            <MapField />
+            <MapSidebar />
         </div>
     );
 };

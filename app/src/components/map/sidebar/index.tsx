@@ -13,8 +13,10 @@ import { mapContext } from "src/contexts/map.context";
 import { Pagination } from "src/components/pagination";
 import Accordion from "src/components/accordion";
 
-const MapSidebar = ({ bayilerData }: SidebarProps<IBayi[], IDistrictUser[]>) => {
-    const { usePagination } = useContext(mapContext);
+const MapSidebar = () => {
+    const { usePagination, useBayiler } = useContext(mapContext);
+
+    const { isFetching: isFetchingBayiler, isError: isErrorBayiler, data: fetchedBayiler } = useBayiler();
 
     const {data : paginator} = usePagination();
 
@@ -27,7 +29,7 @@ const MapSidebar = ({ bayilerData }: SidebarProps<IBayi[], IDistrictUser[]>) => 
                 <h2>{paginator?.totalItems} sonuç </h2>
             </div>
             <List _pathname="/map">
-                <List.Body rows={bayilerData} />
+                <List.Body rows={fetchedBayiler} />
             </List>
             <Pagination config={{_pathname : "/map"}}>
                 <Pagination.First number={1} />
