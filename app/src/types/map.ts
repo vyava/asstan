@@ -7,7 +7,7 @@ interface MapRange {
 }
 
 type BoundingBox = number[];
-type Coordinate = {lat: number, lng: number};
+type Coordinate = {lat: string, lon: string};
 
 type OnlySelectedCritters = {
     show: boolean;
