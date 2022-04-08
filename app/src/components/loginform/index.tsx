@@ -21,7 +21,6 @@ const LoginForm = () => {
             password,
           });
 
-          console.log("result : " + JSON.stringify(result))
           // LOGIN FETCH
           localStorage.setItem("user", JSON.stringify(result));
           setSubmitting(false);
