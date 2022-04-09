@@ -7,7 +7,7 @@ const ISSERVER = typeof window === "undefined";
    */
 const useDistricts = () : IDistrictUser[] => {
     if(!ISSERVER) {
-        let { districts } =  JSON.parse(localStorage.getItem("user"));
+        let { districts } =  JSON.parse(localStorage.getItem("user")) || {};
         return districts || [];
     }
 };
