@@ -8,25 +8,25 @@ const Navbar = () => {
       <Link href="/" passHref>
         <a className={`${style.link} ${style.link_home}`}>
           <span>Anasayfa</span>
-          <Icon name="home" />
+          <Icon name="home" width="15" />
         </a>
       </Link>
       <Link href="/bayiler" passHref>
       <a className={style.link}>
           <span>Bayiler</span>
-          <Icon name="bars" />
+          <Icon name="bars" width="15" />
         </a>
       </Link>
       <Link href="/map" passHref>
       <a className={style.link}>
           <span>Harita</span>
-          <Icon name="map" />
+          <Icon name="map" width="15" />
         </a>
       </Link>
       <Link href="/account" passHref>
       <a className={style.link}>
           <span>Ayarlar</span>
-          <Icon name="cog" />
+          <Icon name="cog" width="15" />
         </a>
       </Link>
     </div>
