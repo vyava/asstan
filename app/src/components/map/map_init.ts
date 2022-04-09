@@ -3,54 +3,31 @@ import { MutableRefObject } from "react";
 import { MapStrings, MapTileLayers } from 'src/utils/constants';
 import { IBayiPoint } from 'src/types/map';
 
-// URL for BC Geographic Warehouse
-const bcgw_url = 'http://openmaps.gov.bc.ca/geo/pub/ows';
-
 export const initMap = (
     mapRef: MutableRefObject<L.Map>,
-    drawnItems: L.FeatureGroup,
-    selectedPings: L.GeoJSON<IBayiPoint[]>,
-    drawSelectedLayer: () => void,
+    pingsLayer: L.GeoJSON<IBayiPoint[]>,
+    // drawSelectedLayer: () => void,
     // handleDrawLine: (l: any) => void,
     // handleDeleteLine: () => void,
 ): void => {
-    mapRef.current = L.map('map', { zoomControl: false }).setView([41.015137, 28.979530], 5);
     // mapRef = useRef<L.Map>(null) as MutableRefObject<L.Map>;
-
 
     // @ts-ignore
     const layerPicker = L.control.layers(null, null, { position: 'topleft' });
-    mapRef.current.addLayer(drawnItems);
-    mapRef.current.addLayer(selectedPings);
+    
+    mapRef.current = L.map('map', { zoomControl: false }).on('loading load', handleMapLoad).setView([41.015137, 28.979530], 5);
+
+    mapRef.current.addLayer(pingsLayer);
 
     addTileLayers(mapRef, layerPicker);
-    drawSelectedLayer();
-
-    mapRef.current.on("click", (e) => {
-        console.log(e)
-    })
-
-    selectedPings.on("baselayerchange", (e) => {
-        console.log("layer tıklandı")
-    })
+    // drawSelectedLayer();
+    // console.log(drawnItems.toGeoJSON())
 };
 
-// setup for normal pings for assigned devices
-// when a ping is clicked/unselected, only the point style is changed
-const setupPingOptions = (pings: L.GeoJSON, clickHandler: L.LeafletEventHandlerFn): void => {
-    pings.options = {
-        pointToLayer: (feature: any, latlng: L.LatLngExpression): L.Layer => {
-            const marker = L.circleMarker(latlng);
-
-            marker.on('click', (e) => {
-                //   e.target.setStyle(selectedPointStyle());
-                clickHandler(e);
-            });
-            marker.on('click', clickHandler);
-            return marker;
-        }
-    };
-};
+const handleMapLoad = (e) => {
+    console.log("EVENT : MAP LOADED")
+    // console.log(e)
+}
 
 const addTileLayers = (mapRef: React.MutableRefObject<L.Map>, layerPicker: L.Control.Layers): void => {
 

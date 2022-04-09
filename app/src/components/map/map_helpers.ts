@@ -41,10 +41,6 @@ const getFeatures = (bayiler : IBayi[]) => {
 }
 
 const prepareFeatureCollection = (bayiler) => {
-    // console.log(bayiler)
-    // let features = getFeatures(bayiler);
-    // console.log(features)
-
     let collection = featureCollection(bayiler);
     return collection;
 }

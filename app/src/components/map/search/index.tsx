@@ -1,17 +1,19 @@
 import { useState, useEffect, useRef, MutableRefObject, useContext } from "react";
 import * as L from 'leaflet'; // must be imported first;
+import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw';
 import 'leaflet-draw/dist/leaflet.draw.css';
-import 'leaflet/dist/leaflet.css';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css'; // Re-uses images from ~leaflet package
 import 'leaflet-defaulticon-compatibility';
 import styles from "./search.module.scss";
 import { initMap } from "src/components/map/map_init";
 import { IBayiPoint, MapRange, OnlySelectedCritters, OnPanelRowSelect } from "src/types/map";
 import { ITown } from "@shared/interfaces";
 import { IDistrictUser } from "@shared/interfaces";
-import { highlightLatestPings, setupSelectedPings } from "../point_setup";
+import { highlightLatestPings, setupLatestPingOptions, setupPingOptions, setupSelectedPings } from "../point_setup";
 import { mapContext } from "src/contexts/map.context";
 import { prepareFeatureCollection } from "../map_helpers";
+import { FeatureCollection } from "@turf/turf";
 
 export type MapSearchBaseProps = {
     // handleRowSelected: OnPanelRowSelect;
@@ -22,12 +24,6 @@ export type MapSearchProps = MapSearchBaseProps & {
     _pings: IBayiPoint[];
     towns?: IDistrictUser[]// ITown;
     unassignedPings?: IBayiPoint[];
-    // Bayi IDs of points that have a device/animal attached
-    // selectedAssignedIDs?: number[];
-    // setShowExportModal?: (b: boolean) => void;
-    // handler for when 'show only checked' is clicked.
-    // handleShowOnlySelected?: (o: OnlySelectedCritters) => void;
-    range?: MapRange;
 };
 
 const MapSearch = (): JSX.Element => {
@@ -37,38 +33,47 @@ const MapSearch = (): JSX.Element => {
 
     const mapRef = useRef<L.Map>(null) as MutableRefObject<L.Map>;
 
+    const [pingsLayer] = useState<L.GeoJSON<IBayiPoint>>(new L.GeoJSON());
+
+    const selectedPingsLayer = new L.GeoJSON();
+
+    selectedPingsLayer.options = setupSelectedPings();
+
+    const [pings, setPings] = useState<IBayiPoint[]>([]);
+
     // store the selection shapes
     const drawnItems = new L.FeatureGroup();
 
-    // const selectedPingsLayer = new L.GeoJSON();
-
-    const [selectedPingsLayer] = useState<L.GeoJSON<IBayiPoint[]>>(new L.GeoJSON());
-
     useEffect(() => {
-        if (isFetchedPings && !!fetchedPings) {
-            
-            // let features = prepareFeatureCollection(fetchedPings);
-            // @ts-ignore
-            let featureCollection: GeoJSON.GeoJsonObject = { type: "FeatureCollection", features : fetchedPings }
-            console.log(featureCollection)
-            selectedPingsLayer.addData(featureCollection);
-        }
 
+        const update = (): void => {
+            if (isFetchedPings && !isErrorPings) {
+
+
+                setupPingOptions(pingsLayer);
+                setupLatestPingOptions(selectedPingsLayer);
+
+                setPings(fetchedPings);
+
+                let featureCollection: GeoJSON.GeoJsonObject = prepareFeatureCollection(fetchedPings)
+
+                redrawLayers(featureCollection as any);
+
+                redrawPings(fetchedPings);
+
+            }
+        }
+        update();
     }, [dataUpdatedAt]);
 
-    useEffect(() => {
-        const ref = mapRef.current;
-        if (!ref) {
-            return;
-        };
-        if (selectedPingsLayer) {
-            redrawLayers(prepareFeatureCollection(fetchedPings));
-        }
-    }, [dataUpdatedAt]);
+    const redrawPings = (pings: IBayiPoint[]): void => {
 
-    const handleDrawShape = (): void => {
-        highlightLatestPings(selectedPingsLayer);
-    };
+        console.log("REDRAW ÇALIŞTI")
+        const layerPicker = L.control.layers();
+        layerPicker.removeLayer(pingsLayer);
+        pingsLayer.clearLayers();
+        pingsLayer.addData(pings as any);
+      };
 
     // clears existing pings/tracks layers
     const clearLayers = (): void => {
@@ -82,22 +87,20 @@ const MapSearch = (): JSX.Element => {
         });
     };
 
-    const redrawLayers = (newPings): void => {
+    const redrawLayers = (newPings = fetchedPings): void => {
         clearLayers();
-        // selectedPingsLayer?.addData(newPings as any);
-        if (isFetchedPings) {
-            console.log("yeniden çiz")
-            selectedPingsLayer?.addData(newPings as any);
-        }
+        selectedPingsLayer?.addData(newPings as any);
+        // console.log("yeniden çiz")
+        // console.log(newPings)
+        pingsLayer.addData(newPings as any)
+        // selectedPingsLayer.addData(newPings as any);
     };
-
-    
 
     // initialize the map
     useEffect(() => {
         const updateComponent = (): void => {
             if (!mapRef.current) {
-                initMap(mapRef, drawnItems, selectedPingsLayer, handleDrawShape/* handleDrawLine, handleDeleteLine */);
+                initMap(mapRef, selectedPingsLayer, /* handleDrawShape *//* handleDrawLine, handleDeleteLine */);
             }
             // tracksLayer.bringToBack();
         };
