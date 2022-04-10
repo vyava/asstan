@@ -1,5 +1,5 @@
 import headerStyle from "./Header.module.scss";
-import Dropdown from "src/components/dropdown";
+import Dropdown from "src/components/dropdown_menu";
 import Icon from "src/utils/icon";
 
 const Header = () => {

@@ -3,8 +3,6 @@
 }
 
 .as_icon {
-    width: 20px;
-
     @apply
     leading-7
     inline-block;
