@@ -94,12 +94,18 @@ const Items = ({totalItems, currentPage, pageSize} : Partial<PaginatorType>) => 
             {
                 pages.map((page, i) => {
                     return (
-                        <CustomLink className={cls({[styles.active_link] : page == currentPage})} key={i} to={
+                        <CustomLink className={cls(
+                                {
+                                    [styles.item] : true,
+                                    [styles.active_link] : page == currentPage,
+                                    [styles.visible] : (page == (currentPage-1) || page == (currentPage+1) || page == (currentPage))
+                                }
+                            )} key={i} to={
                             {
                                 pathname: pathname,
                                 query: { page : page }
                             }
-                        }> {page} </CustomLink>
+                        }> <span>{page}</span></CustomLink>
                     )
                 })
             }
@@ -110,11 +116,11 @@ const Items = ({totalItems, currentPage, pageSize} : Partial<PaginatorType>) => 
 export const Pagination = ({ children, config }: PaginationProps) => {
     return (
         <PaginationContextProvider config={config}>
-            {/* <div className={cls(styles.position, "")}> */}
-                <div className={cls(styles.pagination, "")}>
+            <div className={cls(styles.wrapper, 'wrapper')}>
+                <div className={styles.root}>
                     {children}
                 </div>
-            {/* </div> */}
+            </div>
         </PaginationContextProvider>
     )
 };
@@ -123,8 +129,8 @@ Pagination.First = ({ number }: Partial<ItemProps>) => {
     let { pathname } = useContext(paginationContext);
 
     return (
-        <Item number={number} pathname={pathname} classname="back">
-            <Icon name="long-arrow-alt-left" />
+        <Item number={number} pathname={pathname} classname={cls(styles.item, styles.visible, 'first')}>
+            <Icon name="long-arrow-alt-left" width="15"/>
         </Item>
     );
 };
@@ -132,8 +138,8 @@ Pagination.First = ({ number }: Partial<ItemProps>) => {
 Pagination.Prev = ({ number }: Partial<ItemProps>) => {
     let { pathname } = useContext(paginationContext);
     return (
-        <Item number={number || 1} pathname={pathname} classname="back">
-            <Icon name="long-arrow-alt-left" />
+        <Item number={number || 1} pathname={pathname} classname={cls(styles.item, styles.visible, 'back')}>
+            <Icon name="long-arrow-alt-left" width="15" />
         </Item>
     );
 };
@@ -143,16 +149,16 @@ Pagination.Items = Items;
 
 Pagination.Last = ({ number, pathname }: Partial<ItemProps>) => {
     return (
-        <Item number={number} pathname={pathname} classname="forward">
-            <Icon name="long-arrow-alt-right" />
+        <Item number={number} pathname={pathname} classname={cls(styles.item, styles.visible, 'last')}>
+            <Icon name="long-arrow-alt-right" width="15" />
         </Item>
     );
 };
 
 Pagination.Next = ({ number, pathname }: Partial<ItemProps>) => {
     return (
-        <Item number={number} pathname={pathname} classname="forward">
-            <Icon name="long-arrow-alt-right" />
+        <Item number={number} pathname={pathname} classname={cls(styles.item, styles.visible, 'forward')}>
+            <Icon name="long-arrow-alt-right" width="15" />
         </Item>
     );
 };

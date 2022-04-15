@@ -1,4 +1,7 @@
 .root {
     @apply
     relative;
+
+    // width: calc(100vw - var(--left-space)-1rem);
 };
+

@@ -1,14 +1,12 @@
-$left-space : 5rem;
-
 .root {
-  padding-left: $left-space;
+  padding-left: var(--left-space);
 
   @apply
   w-full
 }
 
 .left {
-  width: $left-space;
+  width: var(--left-space);
   
   @apply
   p-1.5
@@ -18,7 +16,7 @@ $left-space : 5rem;
   fixed
   h-full
   left-0 top-0
-  z-20;
+  z-[2000];
 }
 
 .right {

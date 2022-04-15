@@ -12,8 +12,11 @@ import { ITown } from "@shared/interfaces";
 import { IDistrictUser } from "@shared/interfaces";
 import { highlightLatestPings, setupLatestPingOptions, setupPingOptions, setupSelectedPings } from "../point_setup";
 import { mapContext } from "src/contexts/map.context";
+import { layoutContext } from "src/contexts/layout.context";
 import { prepareFeatureCollection } from "../map_helpers";
 import { FeatureCollection } from "@turf/turf";
+import Icon from "src/utils/icon";
+import cls from "classnames";
 
 export type MapSearchBaseProps = {
     // handleRowSelected: OnPanelRowSelect;
@@ -28,6 +31,7 @@ export type MapSearchProps = MapSearchBaseProps & {
 
 const MapSearch = (): JSX.Element => {
     const { usePings } = useContext(mapContext);
+    const { isMapLarge, toggleIsMapLarge } = useContext(layoutContext);
 
     const { isFetched: isFetchedPings, isError: isErrorPings, data: fetchedPings, dataUpdatedAt } = usePings();
 
@@ -45,7 +49,13 @@ const MapSearch = (): JSX.Element => {
     const drawnItems = new L.FeatureGroup();
 
     useEffect(() => {
+        setTimeout(() => {
+            mapRef.current.invalidateSize();
+        }, 100);
+    }, [isMapLarge])
 
+    
+    useEffect(() => {
         const update = (): void => {
             if (isFetchedPings && !isErrorPings) {
 
@@ -67,8 +77,6 @@ const MapSearch = (): JSX.Element => {
     }, [dataUpdatedAt]);
 
     const redrawPings = (pings: IBayiPoint[]): void => {
-
-        console.log("REDRAW ÇALIŞTI")
         const layerPicker = L.control.layers();
         layerPicker.removeLayer(pingsLayer);
         pingsLayer.clearLayers();
@@ -107,8 +115,12 @@ const MapSearch = (): JSX.Element => {
         updateComponent();
     });
     return (
-        <div className={styles.container}>
+        <div className={cls({[styles.container] : true, [styles.large] : isMapLarge})}>
             <div id="map" className={styles.root}></div>
+            <button className={styles.map_resizer} onClick={() => toggleIsMapLarge()}>
+                <span>{isMapLarge ? 'Daralt' : 'Genişlet'}</span>
+                <Icon theme="light" name="arrow-right-arrow-left" width="10" className={styles.map_resizer_icon}/>
+            </button>
         </div>
     )
 };

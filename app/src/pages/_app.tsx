@@ -43,7 +43,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <Hydrate state={pageProps.dehydratedState}>
+        {/* <Hydrate state={pageProps.dehydratedState}> */}
           <MapContextProvider>
             <ProgressBar />
             <TıtleManager />
@@ -57,7 +57,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             </div>
           </MapContextProvider>
           <ReactQueryDevtools initialIsOpen={false} />
-        </Hydrate>
+        {/* </Hydrate> */}
       </QueryClientProvider>
     </>
   );

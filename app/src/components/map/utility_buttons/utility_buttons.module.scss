@@ -1,0 +1,13 @@
+.root {
+    @apply absolute z-[10000] w-[33.3333%] top-0 left-0;
+};
+
+.map_button {
+    @apply block md:hidden;
+}
+
+.map_icon {
+    @apply fixed bottom-10 z-[1000] left-[50%];
+
+    transform: translateY(-50%);
+};

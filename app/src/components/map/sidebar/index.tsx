@@ -1,27 +1,23 @@
-import { useRouter } from "next/router";
-import { useQuery } from "react-query";
 import List from "src/components/list";
 import { MapFilter } from "src/components/mapFilter";
 import styles from "./sidebar.module.scss";
-import { SidebarProps } from "src/components/component_interfaces";
-import { IBayiPoint, ITownLine } from "src/types/map";
-import { IBayi } from "@shared/interfaces";
-import { IDistrictUser } from "@shared/interfaces";
-import { useDistricts } from "src/fetchers/districts";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { mapContext } from "src/contexts/map.context";
+import { layoutContext } from "src/contexts/layout.context";
 import { Pagination } from "src/components/pagination";
 import Accordion from "src/components/accordion";
+import cls from "classnames";
 
 const MapSidebar = () => {
     const { usePagination, useBayiler } = useContext(mapContext);
+    const { isMapLarge } = useContext(layoutContext);
 
     const { isFetching: isFetchingBayiler, isError: isErrorBayiler, data: fetchedBayiler } = useBayiler();
 
     const {data : paginator} = usePagination();
 
     return (
-        <div className={styles.root}>
+        <div className={cls({[styles.root] : true, [styles.small] : isMapLarge})}>
             <Accordion>
                 <MapFilter />
             </Accordion>

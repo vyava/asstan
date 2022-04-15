@@ -3,7 +3,7 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
   // mode : 'jit',
-  purge: ["./src/**/*.{js,ts,jsx,tsx}", "./public/**/*.html"],
+  content: ["./src/**/*.{js,ts,jsx,tsx}", "./public/**/*.html"],
   // darkMode: false, // or 'media' or 'class'
   theme: {
     colors: {
@@ -61,13 +61,5 @@ module.exports = {
         "header" : '60px 1fr',
       }
     },
-  },
-  variants: {
-    extend: {
-      backgroundColor: ['active'],
-    },
-  },
-  plugins: [
-    // require("tailwindcss-debug-screens")
-  ],
+  }
 };

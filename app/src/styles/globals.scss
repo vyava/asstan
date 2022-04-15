@@ -34,11 +34,12 @@ html, body {
   height: 100%;
   padding: 0;
   margin: 0;
+  font-size: 15px !important;
 }
 
 body {
   background-color: var(--base-background-color);
-  overflow-x: hidden;
+  // overflow-x: hidden;
   display: inline-grid;
 }
 

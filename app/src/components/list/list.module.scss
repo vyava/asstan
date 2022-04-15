@@ -2,7 +2,7 @@
     @apply
     relative
     pb-6
-    w-full;
+    w-full
 }
 
 .container {
@@ -39,7 +39,7 @@
         py-3 px-1
         text-gray-200 font-normal text-left text-base
         bg-white
-        flex-grow
+        flex-grow;
     }
 }
 
@@ -131,13 +131,6 @@
     .min-w-32 { min-width: 8rem }
 }
 
-
-  /* Below styles fake what can be achieved with the tailwind config
-     you need to add the group-hover variant to scale and define your custom
-     min width style.
-  	 See https://codesandbox.io/s/tailwindcss-multilevel-dropdown-y91j7?file=/index.html
-  	 for implementation with config file
-  */
 .group {
     @apply
     inline-block;
@@ -145,22 +138,6 @@
     &:hover .group-hover-scale-100 { transform: scale(1);display:block }
     &:hover .group-hover-rotate-180 { transform: rotate(180deg) }
 
-}
-
-.group_hover_scale_100 {
-    @apply
-    bg-white
-    border
-    rounded-sm
-    transform
-    scale-0
-    group-hover-scale-100
-    absolute 
-    transition
-    duration-150
-    ease-in-out
-    origin-top
-    min-w-32
 }
 
 .body {

@@ -3,11 +3,23 @@
     box-border
     right-0
     ml-auto
-    rounded-md;
-
-    width: 66.66666%;
+    rounded-md
+    md:w-[calc(66.3333%-40px)]
+    transition-all;
+        
     background-color: var(--base-background-color);
 };
+
+.small {
+    @apply
+    md:w-[calc(37%-40px)];
+
+    
+}
+
+.small .wrapper a {
+    @apply hidden;
+}
 
 .heading {
     @apply
@@ -25,4 +37,4 @@
         @apply
         font-bold;
     }
-}
+};
